@@ -1,17 +1,34 @@
 <template>
-  <div class="form-check">
-    <input
-      class="form-check-input"
-      type="checkbox"
-      value=""
-      id="defaultCheck1"
-    />
-    <label class="form-check-label" for="defaultCheck1">
-      Default checkbox
-    </label>
-  </div>
+  <el-checkbox
+    class="checkboxValue"
+    @change="onValueChange"
+    true-label
+    v-model="checkboxValue"
+    >True</el-checkbox
+  >
 </template>
 
 <script>
-export default {};
+export default {
+  props: ["value", "change"],
+  data() {
+    return {
+      checkboxValue: this.value === "true",
+    };
+  },
+  methods: {
+    onValueChange(value) {
+      this.change(value === "");
+    },
+  },
+};
 </script>
+
+<style scoped>
+.checkbox {
+  width: 0%;
+}
+.value-container.col-6 {
+  width: 0%;
+}
+</style>

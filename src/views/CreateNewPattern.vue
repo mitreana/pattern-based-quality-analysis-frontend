@@ -1,60 +1,33 @@
 <template>
-  <div class="createNewPattern w-100" >
-    <h3 ref="title">Create a new pattern:</h3>
-    <form ref="concretePatternForm">
-      <AbstractPatterns></AbstractPatterns>
-      <AbstractPatternTexts></AbstractPatternTexts>
-    </form>
-    <button
-      type="button"
-      class="btn btn-primary d-inline-block w-90 my-3"
-      style="width: 250px"
-      @click="
-        () => {
-          onSubmit();
-        }
-      "
-    >
-      Next
-    </button>
-
-    <div class="row justify-content-center" v-if="loading">
-      <Spinner />
-    </div>
-
-    <div class="alert alert-danger w-50 mx-auto" v-if="errorMessage.length > 0">
-      {{ errorMessage }}
-    </div>
-    <div
-      class="alert alert-success w-50 mx-auto"
-      v-if="successMessage.length > 0"
-    >
-      {{ successMessage }} Redirecting to concrete pattern page...
+  <div class="createNewPattern card">
+    <div class="card-body">
+      <h3 ref="title" class="card-title">Create a new pattern</h3>
+      <AbstractPatternForm></AbstractPatternForm>
     </div>
   </div>
   <router-view />
 </template>
 
 <script>
-import AbstractPatterns from "../components/AbstractPatterns.vue";
-import AbstractPatternTexts from "../components/AbstractPatternTexts.vue";
+import AbstractPatternForm from "../components/AbstractPatternsForm.vue";
 import Navbar from "../components/Navbar.vue";
-import Spinner from "../components/utilities/Spinner.vue";
 import { mapState, mapActions } from "vuex";
 
 export default {
   name: "CreateNewPattern",
   components: {
-    AbstractPatterns,
-    AbstractPatternTexts,
+    AbstractPatternForm,
     Navbar,
-    Spinner,
   },
 
   data: () => {
     return {
       timeout: false,
-      form: null,
+      form: {
+        "Abstract Pattern": "",
+        "Abstract Pattern Text": "",
+        "Concrete Pattern Name": "",
+      },
       loading: false,
     };
   },
@@ -88,7 +61,6 @@ export default {
       "onActiveConcretePatternChoice",
     ]),
     onTimeout() {
-      
       setTimeout(() => {
         this.goToJustCreatedConcretePattern();
         this.resetUserConcretePatternInformation();
@@ -96,8 +68,6 @@ export default {
       }, 5000);
     },
     async onSubmit() {
-      const { concretePatternForm } = this.$refs;
-      concretePatternForm.reset();
       this.loading = true;
       await this.onCreateConcretePattern({
         abstractPattern: this.userAbstractPattern,
@@ -107,18 +77,30 @@ export default {
       this.loading = false;
       this.onTimeout();
     },
+    submitForm(formName) {
+      this.$refs[formName].validate(async (valid) => {
+        if (valid) {
+          await this.onSubmit();
+        } else {
+          return false;
+        }
+      });
+    },
     goToJustCreatedConcretePattern() {
       if (this.successMessage.length > 0) {
-        this.getConcrtePatternName();
         this.$router.push("/concretePatterns");
       }
-    },
-    getConcrtePatternName() {
-      console.log("Concrete pattern name is", this.userConcretePatternName);
-      this.onActiveConcretePatternChoice(this.userConcretePatternName);
     },
   },
 };
 </script>
+<style>
+.createNewPattern {
+  width: 80%;
+  margin: auto;
+}
 
-
+.title {
+  padding-left: 3%;
+}
+</style>

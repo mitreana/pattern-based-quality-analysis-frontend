@@ -1,18 +1,25 @@
 <template>
-  <input
+  <el-input
+    placeholder="Text"
     type="text"
-    class="form-control"
     :value="value"
     @input="
-      (event) => {
-        change(event.target.value);
+      (value) => {
+        change(value);
       }
     "
+    v-model="textValue"
+    class="w-100"
   />
 </template>
 
 <script>
 export default {
   props: ["value", "change"],
+  data() {
+    return {
+      textValue: this.value,
+    };
+  },
 };
 </script>

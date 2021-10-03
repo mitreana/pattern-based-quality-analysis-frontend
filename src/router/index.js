@@ -1,13 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/Home.vue";
 import CreateNewPattern from "../views/CreateNewPattern.vue";
 import ConcretePatterns from "../views/ConcretePatterns.vue";
+import EditConcretePatternText from "../views/EditConcretePatternText.vue";
 
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Home,
+    redirect: "/createNewPattern",
   },
   {
     path: "/createNewPattern",
@@ -18,6 +17,11 @@ const routes = [
     path: "/concretePatterns",
     name: "ConcretePatterns",
     component: ConcretePatterns,
+  },
+  {
+    path: "/concretePatterns/edit/:concretePatternName",
+    name: "EditConcretePatternText",
+    component: EditConcretePatternText,
   },
 ];
 

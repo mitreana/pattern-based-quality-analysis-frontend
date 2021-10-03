@@ -6,37 +6,76 @@
         Object.keys(concretePatternParameters).length > 0
     "
   >
-    <div class="col-1 align-self-center">
-      <h5>{{ concretePatternParameters[fragment.URL].id }} :</h5>
-    </div>
-    <div class="value-container col-6 px-2">
+    <div class="value-container px-2">
       <SelectInput
-        v-if="
-          concretePatternParameters[fragment.URL].type === 'TextList' ||
-            concretePatternParameters[fragment.URL].type === 'Enumeration'
-        "
+        v-if="userType === 'TextList'"
         :options="fragment.Options"
-        :value="concretePatternParameters[fragment.URL].value"
+        :value="
+          concretePatternParameters[fragment.URL] &&
+            concretePatternParameters[fragment.URL].value &&
+            concretePatternParameters[fragment.URL].value
+        "
+        :change="(value) => onValueChange(value, fragment.URL)"
+      />
+      <SelectInput
+        v-if="userType === 'Enumeration'"
+        :options="fragment.Options"
+        :value="
+          concretePatternParameters[fragment.URL] &&
+            concretePatternParameters[fragment.URL].value &&
+            concretePatternParameters[fragment.URL].value
+        "
         :change="(value) => onValueChange(value, fragment.URL)"
       />
       <TextInput
-        v-if="concretePatternParameters[fragment.URL].type === 'Text'"
-        :value="concretePatternParameters[fragment.URL].value"
+        v-if="userType === 'Text'"
+        :value="
+          concretePatternParameters[fragment.URL] &&
+            concretePatternParameters[fragment.URL].value &&
+            concretePatternParameters[fragment.URL].value
+        "
         :change="(value) => onValueChange(value, fragment.URL)"
       />
       <NumberInput
-        v-if="concretePatternParameters[fragment.URL].type === 'Number'"
+        v-if="userType === 'Number'"
         :value="concretePatternParameters[fragment.URL].value"
         :change="(value) => onValueChange(value, fragment.URL)"
       />
       <DateTimeInput
-        v-if="concretePatternParameters[fragment.URL].type === 'DateTime'"
+        v-if="userType === 'DateTime'"
+        :change="(value) => onValueChange(value, fragment.URL)"
+        :value="
+          concretePatternParameters[fragment.URL] &&
+            concretePatternParameters[fragment.URL].value &&
+            concretePatternParameters[fragment.URL].value
+        "
       />
       <DateInput
-        v-if="concretePatternParameters[fragment.URL].type === 'Date'"
+        v-if="userType === 'Date'"
+        :change="(value) => onValueChange(value, fragment.URL)"
+        :value="
+          concretePatternParameters[fragment.URL] &&
+            concretePatternParameters[fragment.URL].value &&
+            concretePatternParameters[fragment.URL].value
+        "
       />
       <TimeInput
-        v-if="concretePatternParameters[fragment.URL].type === 'Time'"
+        v-if="userType === 'Time'"
+        :change="(value) => onValueChange(value, fragment.URL)"
+        :value="
+          concretePatternParameters[fragment.URL] &&
+            concretePatternParameters[fragment.URL].value &&
+            concretePatternParameters[fragment.URL].value
+        "
+      />
+      <CheckboxInput
+        v-if="userType === 'Boolean'"
+        :change="(value) => onValueChange(value, fragment.URL)"
+        :value="
+          concretePatternParameters[fragment.URL] &&
+            concretePatternParameters[fragment.URL].value &&
+            concretePatternParameters[fragment.URL].value
+        "
       />
     </div>
     <div class="type-container col-2 px-2">
@@ -48,18 +87,19 @@
       ></SelectInput>
     </div>
     <div class="button-container">
-      <button
-        :class="concretised ? 'btn btn-success' : 'btn btn-primary'"
-        :disabled="
-          (concretePatternParameters[fragment.URL].value.length === 0 &&
-            !userValue) ||
-            (userValue && userValue.length === 0) ||
-            concretised
+      <el-button
+        type="primary"
+        @click="
+          () => {
+            onConcretiseParameter();
+            added = true;
+          }
         "
-        @click="onConcretiseParameter"
+        plain
+        :disabled="!userValue"
       >
-        {{ concretised ? "Done" : "Add" }}
-      </button>
+        Add
+      </el-button>
     </div>
   </div>
 </template>
@@ -71,11 +111,12 @@ import SelectInput from "./inputs/SelectInput.vue";
 import DateTimeInput from "./inputs/DateTimeInput.vue";
 import DateInput from "./inputs/DateInput.vue";
 import TimeInput from "./inputs/TimeInput.vue";
+import CheckboxInput from "./inputs/CheckboxInput.vue";
 import ConcretePatternService from "../services/ConcretePatternService";
 import { mapState, mapActions } from "vuex";
 
 export default {
-  props: ["fragment"],
+  props: ["fragment", "type"],
   components: {
     TextInput,
     NumberInput,
@@ -83,33 +124,47 @@ export default {
     DateTimeInput,
     DateInput,
     TimeInput,
+    CheckboxInput,
   },
-  data: () => {
+  computed: {
+    ...mapState({
+      concretePatternParameters: (state) => {
+        return state.concretePatternParameters;
+      },
+    }),
+    transformedUserType() {
+      return this.concretePatternParameters[this.fragment.URL] &&
+        this.concretePatternParameters[this.fragment.URL].type
+        ? this.concretePatternParameters[this.fragment.URL].type
+        : null;
+    },
+  },
+  data() {
     return {
-      types: [
-        "Text",
-        "TextList",
-        "Enumeration",
-        "Number",
-        "Date",
-        "Time",
-        "DateTime",
-      ],
+      types: ["Text", "Number", "Date", "Time", "DateTime", "Boolean"],
       userValue: null,
-      userType: null,
+      userType: this.type,
       concretised: false,
+      added: false,
     };
   },
-  computed: mapState({
-    concretePatternParameters: (state) => {
-      return state.concretePatternParameters;
-    },
-  }),
   methods: {
     ...mapActions(["onUserParameterValueChoice", "onUserParameterTypeChoice"]),
+    openNotification(title, message, type) {
+      this.$notify({
+        title,
+        message,
+        type,
+        position: "bottom-right",
+      });
+    },
     onValueChange: function(value, url) {
-      this.userValue = value;
-      this.onUserParameterValueChoice({ value, url });
+      this.userValue = String(value);
+      this.onUserParameterValueChoice({ value: String(value), url });
+    },
+    onBooleanChange: function(value, url) {
+      this.userValue = Boolean(value);
+      this.onUserParameterValueChoice({ value: Boolean(value), url });
     },
     onTypeChange: function(type) {
       this.userType = type;
@@ -124,7 +179,34 @@ export default {
       if (concretiseParameterPayload) {
         this.concretised = true;
       }
+
+      if (this.concretised) {
+        this.openNotification(
+          "Success message",
+          "New Paremeter value was successfully added!",
+          "success"
+        );
+      }
     },
+  },
+  mounted() {
+    this.added = false;
+  },
+  unmounted() {
+    const defaultValue =
+      this.concretePatternParameters[this.fragment.URL] &&
+      this.concretePatternParameters[this.fragment.URL].defaultValue &&
+      this.concretePatternParameters[this.fragment.URL].defaultValue;
+    const URL = this.fragment && this.fragment.URL && this.fragment.URL;
+
+    const defaultType =
+      this.concretePatternParameters[this.fragment.URL] &&
+      this.concretePatternParameters[this.fragment.URL].defaultType &&
+      this.concretePatternParameters[this.fragment.URL].defaultType;
+    if (!this.added) {
+      this.onValueChange(defaultValue, URL);
+      this.onTypeChange(defaultType, URL);
+    }
   },
 };
 </script>

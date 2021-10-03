@@ -1,49 +1,44 @@
 <template>
   <div class="date-container position-relative">
-    <input
-      type="text"
-      readonly
-      :style="{ cursor: 'pointer' }"
-      class="vc-input form-control"
-      placeholder="Select a time"
-      @click="toggleInput"
-      :value="isoDate"
-    />
+    <el-time-picker
+      v-model="selectedTime"
+      placeholder="Arbitrary time"
+      @change="onValueChange"
+      class="w-100"
+    >
+    </el-time-picker>
   </div>
-  <DatePicker
-    mode="time"
-    class="w-47 mt-2 position-absolute"
-    :style="{ left: '22%', zIndex: 2000 }"
-    v-if="displayInput"
-    v-model="selectedTime"
-  />
 </template>
 
 <script>
 import moment from "moment";
+const isoTimeFormat = "HH:MM:SS";
 
 export default {
-  data: () => {
+  props: ["value", "change"],
+  methods: {
+    convertToDate(timestamp) {
+      const [hours, minutes, seconds] = timestamp.split(":");
+      const baseDate = new Date(1970, 0, 0);
+      baseDate.setTime(
+        baseDate.getTime() +
+          parseInt(hours) * 60 * 60 * 1000 +
+          parseInt(minutes) * 60 * 1000 +
+          parseInt(seconds) * 1000
+      );
+      return baseDate;
+    },
+    onValueChange(value) {
+      this.change(moment(value).format(isoTimeFormat));
+    },
+  },
+  data() {
     return {
-      defaultDate: new Date(),
-      displayInput: false,
-      selectedTime: new Date(),
+      selectedTime: this.value ? this.convertToDate(this.value) : null,
     };
   },
-  computed: {
-    isoDate() {
-      if (this.selectedTime) {
-        return moment(this.selectedTime).format("hh:mm:ss");
-      } else {
-        return "";
-      }
-    },
-  },
-
-  methods: {
-    toggleInput() {
-      this.displayInput = !this.displayInput;
-    },
+  created() {
+    this.convertToDate(this.value);
   },
 };
 </script>

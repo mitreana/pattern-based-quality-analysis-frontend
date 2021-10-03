@@ -9,17 +9,12 @@ const actions = {
       userChoice
     );
 
-    //we call the method of the service and we pass to it the userChoice
-    //in order the api to be called it needs the text which is onChoice
-    //we call this each time the abstract pattern choice changes sot that the texts will be updated
-
     if (abstractPatternTextPayload.success) {
       context.commit("registerErrorMessage", "");
       context.commit(
         "registerAbstractPatternTexts",
         abstractPatternTextPayload.data
-      ); //we call the mutation to pass the data from the call to our initial
-      // data abstractPatternTextswhich are then accessible from the store
+      );
     } else {
       context.commit("registerErrorMessage", data.message);
     }
@@ -36,8 +31,8 @@ const actions = {
   onUserConcretePatternTextChoice: (context, userChoice) => {
     context.commit("changeUserConcretePatternText", userChoice);
   },
-  onActiveConcretePatternChoice: (context, userChoice)=> {
-    context.commit("changeActiveConcretePattern",userChoice)
+  onActiveConcretePatternChoice: (context, userChoice) => {
+    context.commit("changeActiveConcretePattern", userChoice);
   },
   callAbstractPatterns: async (context) => {
     const abstractPatternPayload = await AbstractPatternService.getAbstractPatterns();
@@ -97,14 +92,22 @@ const actions = {
     const concretePatternPayload = await ConcretePatternService.getConcretePatterns();
 
     if (concretePatternPayload.success) {
+      const concretePatterns = await Promise.all(
+        concretePatternPayload.data.map(async (concretePattern) => {
+          const concretePatternTextPayload = await ConcretePatternService.getConcretePatternText(
+            concretePattern
+          );
+
+          return Promise.resolve(concretePatternTextPayload.data);
+        })
+      );
       context.commit("registerErrorMessage", "");
-      context.commit("registerConcretePatterns", concretePatternPayload.data);
+      context.commit("registerConcretePatterns", concretePatterns);
     } else {
       context.commit(
         "registerErrorMessage",
         concretePatternPayload.data.message
       );
-      //message: property of error object
     }
   },
   clearMessages: (context) => {
@@ -133,16 +136,40 @@ const actions = {
         //{"url":{id:"1",value:"something"},"url1":{id:"2",value:"something"}}
         accumulator[value.URL] = {
           id: index,
-          value: value.Value ? String(value.Value) : "",
+          value: value.Value !== undefined ? String(value.Value) : "",
+          defaultValue: value.Value ? String(value.Value) : "",
           type: value.Type && value.Type === "Untyped" ? "Text" : value.Type,
+          defaultType:
+            value.Type && value.Type === "Untyped" ? "Text" : value.Type,
+          visible:
+            !value.hasOwnProperty("Dependent") ||
+            !!(
+              value.Dependent &&
+              concretePatternPayloadToJson.data.Fragments.find((parameter) => {
+                return (
+                  parameter &&
+                  parameter.Enable &&
+                  parameter.Enable.Parameter &&
+                  parameter.Enable.Parameter === value.URL &&
+                  parameter.Enable.If === parameter.Value
+                );
+              })
+            ),
+          dependent: concretePatternPayloadToJson.data.Fragments.find(
+            (parameter) => {
+              return (
+                parameter &&
+                parameter.Enable &&
+                parameter.Enable.Parameter &&
+                parameter.Enable.Parameter === value.URL
+              );
+            }
+          ),
           done: false,
         };
         index++;
         return accumulator;
       }, {});
-
-      // Iterates the parameter array and creates and object which holds the parameter Url as a key
-      // unique identifier and the value and type of the parameter as the properties for the value
 
       context.commit("initializeParameters", parameterObject);
     } else {
@@ -150,7 +177,6 @@ const actions = {
         "registerErrorMessage",
         concretePatternPayloadToJson.data.message
       );
-      //message property of error object
     }
   },
   onInitializeParameters: (context, parameters) => {
@@ -160,19 +186,42 @@ const actions = {
       accumulator[value.URL] = {
         id: index,
         value: value.Value ? String(value.Value) : "",
+        defaultValue: value.Value ? String(value.Value) : "",
         type: value.Type && value.Type === "Untyped" ? "Text" : value.Type,
+        defaultType:
+          value.Type && value.Type === "Untyped" ? "Text" : value.Type,
+        visible:
+          !value.hasOwnProperty("Dependent") ||
+          (value.hasOwnProperty("Dependent") &&
+            parameters.find((parameter) => {
+              return (
+                parameter &&
+                parameter.Enable &&
+                parameter.Enable.Parameter &&
+                parameter.Enable.Parameter === value.URL &&
+                parameter.Enable.If === parameter.Value
+              );
+            })),
+        dependent: parameters.find(
+          (parameter) =>
+            parameter &&
+            parameter.Enable &&
+            parameter.Enable.Parameter &&
+            parameter.Enable.Parameter === value.URL
+        ),
         done: false,
       };
       index++;
       return accumulator;
     }, {});
-
-    // Iterates the parameter array and creates and object which holds the parameter Url as a key
-    // unique identifier and the value and type of the parameter as the properties for the value
-
     context.commit("initializeParameters", parameterObject);
   },
-  onConcretizeParameter: async (context, URL, parameterValue, parameterType) => {
+  onConcretizeParameter: async (
+    context,
+    URL,
+    parameterValue,
+    parameterType
+  ) => {
     const concretizeParameterPayload = await ConcretePatternService.postConcretiseParameter(
       URL,
       parameterValue,
@@ -181,7 +230,6 @@ const actions = {
     if (concretizeParameterPayload.success) {
       context.commit("registerErrorMessage", "");
       context.commit("registerSuccessMessage", concretizeParameterPayload.data);
-      
     } else {
       context.commit(
         "registerEroorMessage",
@@ -196,6 +244,37 @@ const actions = {
 
   onUserParameterTypeChoice: (context, payload) => {
     context.commit("registerParameterType", payload);
+  },
+
+  selectActiveParameter: (context, payload) => {
+    context.commit("registerActiveParameter", payload);
+  },
+
+  onDelete: async (context, userChoice) => {
+    const postDeletePayload = await ConcretePatternService.postDelete(
+      userChoice
+    );
+    if (postDeletePayload.success) {
+      context.commit("registerErrorMessage", "");
+      context.commit("registerSuccessMessage", postDeletePayload.data);
+    } else {
+      context.commit("registerErrorMessage", postDeletePayload.data.message);
+    }
+  },
+
+  onFinalization: async (context, userChoice) => {
+    const postFinalizationPayload = await ConcretePatternService.postFinalizeConcretisation(
+      userChoice
+    );
+    if (postFinalizationPayload.success) {
+      context.commit("registerErrorMessage", "");
+      context.commit("registerSuccessMessage", postFinalizationPayload.data);
+    } else {
+      context.commit(
+        "registerErrorMessage",
+        postFinalizationPayload.data.message
+      );
+    }
   },
 };
 

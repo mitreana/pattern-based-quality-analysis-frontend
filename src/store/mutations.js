@@ -1,6 +1,3 @@
-//import { use } from "vue/types/umd";
-//import AbstractPatternService from "../services/AbstractPatternService";
-
 const mutations = {
   changeUserAbstractPattern: (state, userChoice) => {
     state.userAbstractPattern = userChoice;
@@ -18,7 +15,6 @@ const mutations = {
     state.validationErrors.concretePatternName = false;
   },
   changeActiveConcretePattern: (state, userChoice) => {
-    console.log("Mutation entered", userChoice);
     state.activeConcretePattern = userChoice;
   },
   resetUserConcretePatternInformation: (state) => {
@@ -40,21 +36,6 @@ const mutations = {
   },
   registerSuccessMessage: (state, successMessage) => {
     state.successMessage = successMessage;
-    console.log(successMessage);
-  },
-  validateUserInputs: (state) => {
-    state.submitted = true;
-    //if user didnt entered a field show invalid
-    if (state.userAbstractPattern.length === 0) {
-      state.validationErrors.abstractPattern = true;
-      state.validationErrors.abstractPatternText = true;
-      state.validationErrors.concretePatternName = true;
-    } else if (state.userAbstractPatternText.length === 0) {
-      state.validationErrors.abstractPatternText = true;
-      state.validationErrors.concretePatternName = true;
-    } else if (state.userConcretePatternName.length === 0) {
-      state.validationErrors.concretePatternName = true;
-    }
   },
   registerConcretePatternText: (state, concretePatternText) => {
     state.concretePatternTextObject = concretePatternText;
@@ -74,6 +55,46 @@ const mutations = {
     state.concretePatternParameters = { ...parameterObject };
   },
   registerParameterValue: (state, payload) => {
+    const childParameter = Object.keys(state.concretePatternParameters).find(
+      (concretePatternParameterKey) => {
+        return (
+          state.concretePatternParameters[concretePatternParameterKey] &&
+          state.concretePatternParameters[concretePatternParameterKey]
+            .dependent &&
+          state.concretePatternParameters[concretePatternParameterKey].dependent
+            .URL === payload.url &&
+          state.concretePatternParameters[concretePatternParameterKey].dependent
+            .Enable.If === payload.value
+        );
+      }
+    );
+
+    const notChildParameter = Object.keys(state.concretePatternParameters).find(
+      (concretePatternParameterKey) => {
+        return (
+          state.concretePatternParameters[concretePatternParameterKey] &&
+          state.concretePatternParameters[concretePatternParameterKey]
+            .dependent &&
+          state.concretePatternParameters[concretePatternParameterKey].dependent
+            .URL === payload.url &&
+          state.concretePatternParameters[concretePatternParameterKey].dependent
+            .Enable.If !== payload.value
+        );
+      }
+    );
+
+    if (childParameter) {
+      state.concretePatternParameters[childParameter] = {
+        ...state.concretePatternParameters[childParameter],
+        visible: true,
+      };
+    } else if (notChildParameter) {
+      state.concretePatternParameters[notChildParameter] = {
+        ...state.concretePatternParameters[notChildParameter],
+        visible: false,
+      };
+    }
+
     state.concretePatternParameters[payload.url] = {
       ...state.concretePatternParameters[payload.url],
       value: payload.value,
@@ -85,6 +106,10 @@ const mutations = {
       ...state.concretePatternParameters[payload.url],
       type: payload.type,
     };
+  },
+
+  registerActiveParameter: (state, payload) => {
+    state.activeParameter = payload;
   },
 };
 

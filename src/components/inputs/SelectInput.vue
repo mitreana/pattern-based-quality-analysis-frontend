@@ -1,28 +1,33 @@
 <template>
-  <select
-    class="form-select w-80"
+  <el-select
     @change="
-      (event) => {
-        change(event.target.value);
+      (value) => {
+        change(value);
       }
     "
-  
+    v-model="selectValue"
+    class="w-100"
   >
-    <option
+    <el-option
       v-for="item in options"
       :key="item"
       :value="item"
       :selected="item === value"
     >
       {{ item }}
-    </option>
-  </select>
+    </el-option>
+  </el-select>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
 export default {
   props: ["options", "value", "change"],
+  data() {
+    return {
+      selectValue: this.value,
+    };
+  },
   computed: mapState({
     concretePatternTextObject: (state) => {
       return state.concretePatternTextObject;

@@ -10,7 +10,6 @@ class ConcretePatternService {
   async getConcretePatterns() {
     try {
       const payload = await axios.get(this.baseUrl + "/concrete-patterns");
-      // Error 401 unauthorized
       return {
         success: true,
         data: payload.data,
@@ -19,7 +18,6 @@ class ConcretePatternService {
       return {
         success: false,
         data: err,
-        //what is this err hier?
       };
     }
   }
@@ -29,7 +27,6 @@ class ConcretePatternService {
       const payload = await axios.get(
         this.baseUrl + `/concrete-patterns` + `/text/${concretePatternName}`
       );
-      // Error 401 unauthorized
       return {
         success: true,
         data: payload.data,
@@ -64,6 +61,51 @@ class ConcretePatternService {
       };
     }
   }
+  //http://localhost:8080/qualitypatternmodel/concrete-patterns/deletion/lo
+
+  async postDelete(concretePatternName) {
+    try {
+      const payload = await axios.delete(
+        this.baseUrl +
+          `/concrete-patterns` +
+          `/deletion/${concretePatternName}`,
+        {
+          Headers: { Origin: "*" },
+        }
+      );
+      return {
+        success: true,
+        data: payload.data,
+      };
+    } catch (err) {
+      return {
+        success: false,
+        data: err,
+      };
+    }
+  }
+
+  //http://localhost:8080/qualitypatternmodel/concrete-patterns/finalization/card_concrete
+
+  async postFinalizeConcretisation(concretePatternName) {
+    try{
+    const payload = await axios.post(
+      this.baseUrl + `/concrete-patterns/finalization/${concretePatternName}`,
+      { Headers: { Origin: "*" } }
+    );
+    return {
+      success : true,
+      data : payload.data
+      
+    }
+    
+  }catch(err){
+      return{
+        success : false,
+        data:err
+      }
+  }
+}
 }
 
 export default new ConcretePatternService(

@@ -1,70 +1,32 @@
 <template>
   <div class="date-time-container position-relative">
-    <input
-      type="text"
-      readonly
-      :style="{ cursor: 'pointer' }"
-      class="vc-input form-control"
-      placeholder="Select a datetime"
-      @click="toggleInput"
-      :value="isoDate"
-    />
+    <el-date-picker
+      v-model="selectedDateTime"
+      type="datetime"
+      placeholder="Select date and time"
+      @change="onValueChange"
+      class="w-100"
+    >
+    </el-date-picker>
   </div>
-  <DatePicker
-    mode="dateTime"
-    class="w-47 mt-2 position-absolute"
-    :style="{ left: '22%', zIndex: 2000 }"
-    v-if="displayInput"
-    v-model="selectedDateTime"
-  />
 </template>
 
 <script>
+import moment from "moment";
+const isoDateTimeFormat = "YYYY:MM:DD[T]HH:MM:SS";
+
 export default {
-  data: () => {
+  props: ["value", "change"],
+  data() {
     return {
-      defaultDate: new Date(),
-      displayInput: false,
-      selectedDateTime: null,
+      selectedDateTime: this.value ? new Date(this.value) : null,
     };
   },
-  computed: {
-    isoDate() {
-      if (this.selectedDateTime) {
-        return new Date(this.selectedDateTime).toISOString();
-      } else {
-        return "";
-      }
-    },
-  },
-
   methods: {
-    toggleInput() {
-      this.displayInput = !this.displayInput;
+    onValueChange(value) {
+      const dateTime = moment(value).format();
+      this.change(dateTime.split("+")[0]);
     },
-    onChange(event) {
-      console.log("Value", event.target.timestamp);
-    },
-  },
-
-  created() {
-    document.addEventListener("click", (event) => {
-      if (event.target && !event.target.classList[0]) {
-        this.displayInput = false;
-      }
-
-      if (
-        event.target &&
-        event.target.classList &&
-        event.target.classList[0] &&
-        !event.target.classList[0].includes("vc")
-      ) {
-        this.displayInput = false;
-      }
-    });
-  },
-  unmounted() {
-    document.removeEventListener("click", () => {});
   },
 };
 </script>

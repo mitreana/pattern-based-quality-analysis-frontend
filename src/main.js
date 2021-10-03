@@ -6,6 +6,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import store from "./store/store";
 import vSelect from "vue-select";
 import { SetupCalendar, Calendar, DatePicker } from "v-calendar";
+import ElementPlus from "element-plus";
+import "element-plus/dist/index.css";
 
 const app = createApp(App);
 
@@ -17,4 +19,5 @@ app
   .component("DatePicker", DatePicker)
   .use(router)
   .use(store)
+  .use(ElementPlus)
   .mount("#app");

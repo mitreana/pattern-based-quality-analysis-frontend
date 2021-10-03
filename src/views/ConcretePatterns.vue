@@ -1,15 +1,16 @@
 <template>
-<div>
-  <ConcretePatternsList></ConcretePatternsList>
-  <ConcretePatternText></ConcretePatternText>
+  <div class="card-body py-0">
+    <div class="concretePatternsView card">
+      <h3 ref="title" class="card-title my-4 mx-2">Concrete Patterns</h3>
+      <ConcretePatternTable></ConcretePatternTable>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
 import Navbar from "../components/Navbar.vue";
-import ConcretePatternsList from "../components/ConcretePatternsList.vue";
-import ConcretePatternText from "../components/ConcretePatternText.vue";
+import ConcretePatternTable from "../components/ConcretePatternTable.vue";
 import SelectInput from "../components/inputs/SelectInput.vue";
 
 export default {
@@ -20,15 +21,20 @@ export default {
   methods: { ...mapActions(["callConcretePatternText"]) },
   components: {
     Navbar,
-    ConcretePatternsList,
-    ConcretePatternText,
+    ConcretePatternTable,
     SelectInput,
   },
   created() {
-    console.log("Active concrete pattern", this.activeConcretePattern);
     if (this.activeConcretePattern && this.activeConcretePattern.length > 0) {
       this.callConcretePatternText(this.activeConcretePattern);
     }
   },
 };
 </script>
+<style>
+.concretePatternsView {
+  width: 90%;
+  margin: auto;
+  padding-top: 0%;
+}
+</style>

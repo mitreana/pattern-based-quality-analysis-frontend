@@ -11,19 +11,15 @@ const initialData = {
   userParameterUrl: "",
   abstractPatterns: [],
   concretePatterns: [],
+  concretePatternNameTableChoice: "",
   abstractPatternTexts: [],
   concretePatternTextObject: {},
   errorMessage: "",
   successMessage: "",
-  validationErrors: {
-    abstractPattern: true,
-    abstractPatternText: true,
-    concretePatternName: true,
-    concretePattern: true,
-  },
   submited: false,
   concretePatternParameters: {},
   activeConcretePattern: "",
+  activeParameter: "",
 };
 
 const store = createStore({

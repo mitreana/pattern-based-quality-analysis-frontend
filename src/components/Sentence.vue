@@ -1,48 +1,68 @@
 <template>
-<div>
-  <p
+  <div
     v-if="
       concretePatternParameters &&
-        Object.keys(concretePatternParameters).length > 0  
+        Object.keys(concretePatternParameters).length > 0
     "
-    :style="{ whiteSpace: 'pre-line' }"
-    v-on:click="onClick"
-   
   >
-    <span
-       v-for="fragment in fragments"
-      :key="fragment"
-      :style="{
-        fontWeight: typeof fragment !== 'string' && 'bold',
-        border: typeof fragment !== 'string' && '1px solid #333',
-        borderRadius: '2px',
-        padding: typeof fragment !== 'string' && '2px',
-        margin: typeof fragment !== 'string' && '4px',
-        lineHeight: '2rem',
-        color: typeof fragment !== 'string' ? colors.progress
-              : '#333',
-        cursor: typeof fragment !== 'string' && 'pointer',
-      }"
-      @click="onClick "
-    >
-      {{
-        typeof fragment === "string"
-          ? fragment   
-          : concretePatternParameters[fragment.URL].value &&
+    <p>
+      <span
+        v-for="(fragment, index) in fragments"
+        :key="index"
+        class="py-1 px-0 d-inline-block"
+      >
+        <span v-if="typeof fragment === 'string'">
+          {{ fragment }}
+        </span>
+        <el-tag
+          class="mx-2"
+          :style="{
+            cursor: 'pointer',
+          }"
+          data-toggle="tooltip"
+          data-placement="bottom"
+          title="Click to edit"
+          @click="() => selectActiveParameter(fragment.URL)"
+          :type="
+            `${
+              concretePatternParameters[fragment.URL] &&
+              concretePatternParameters[fragment.URL].value &&
+              concretePatternParameters[fragment.URL].value.length > 0
+                ? 'info'
+                : 'warning'
+            }`
+          "
+          :class="
+            ` object-parameter ${
+              concretePatternParameters[fragment.URL] &&
+              concretePatternParameters[fragment.URL].value &&
+              concretePatternParameters[fragment.URL].value.length > 0
+                ? 'object-parameter-default'
+                : 'object-parameter-empty'
+            }`
+          "
+          effect="plain"
+          v-if="
+            typeof fragment === 'object' &&
+              concretePatternParameters[fragment.URL] &&
+              concretePatternParameters[fragment.URL].visible
+          "
+        >
+          {{
+            concretePatternParameters[fragment.URL] &&
+            concretePatternParameters[fragment.URL].value &&
             concretePatternParameters[fragment.URL].value.length > 0
-          ? ` ${concretePatternParameters[fragment.URL].id}: ${
-              concretePatternParameters[fragment.URL].value
-            } `
-          : ` ${concretePatternParameters[fragment.URL].id}: Empty value `
-      }}
-      
-    </span>
-  </p>
+              ? `${concretePatternParameters[fragment.URL].value} `
+              : (placeholder = "Empty value")
+          }}
+        </el-tag>
+      </span>
+    </p>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   props: ["fragments"],
@@ -51,21 +71,24 @@ export default {
       return state.concretePatternParameters;
     },
   }),
-  data: () => {
-    return {
-      colors: {
-        progress: "#DAB923",
-        done: "#63D34C",
-      },
-    };
+  methods: {
+    ...mapActions(["selectActiveParameter"]),
   },
-  methods:{
-    onclick(){
-      
-        console.log("hello")
-     
-    }
-  }
 };
 </script>
 
+<style scoped>
+.object-parameter {
+  transition: all 100ms ease-in-out;
+}
+
+.object-parameter-default:hover {
+  background: darkgray;
+  color: #ffffff !important;
+}
+
+.object-parameter-empty:hover {
+  background: #ffa900;
+  color: #ffffff !important;
+}
+</style>
