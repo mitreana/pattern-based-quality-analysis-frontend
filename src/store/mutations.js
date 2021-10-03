@@ -14,6 +14,10 @@ const mutations = {
   changeActiveConcretePattern: (state, userChoice) => {
     state.activeConcretePattern = userChoice;
   },
+  resetMessages: (state) => {
+    state.errorMessage = "";
+    state.successMessage = "";
+  },
   resetUserConcretePatternInformation: (state) => {
     state.userAbstractPatternText = "";
     state.userConcretePatternName = "";

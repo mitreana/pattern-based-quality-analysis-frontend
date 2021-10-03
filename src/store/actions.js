@@ -66,8 +66,7 @@ const actions = {
     }
   },
   onCreateConcretePattern: async (context, body) => {
-    context.commit("validateUserInputs");
-
+    context.commit("resetMessages");
     if (
       body.abstractPattern.length > 0 &&
       body.abstractPatternText.length > 0 &&
