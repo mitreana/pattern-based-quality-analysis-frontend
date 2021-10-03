@@ -185,7 +185,6 @@ export default {
         if (valid) {
           await this.onSubmit();
           if (this.successMessage.length > 0) {
-            console.log(this.successMessage);
             this.callConcretePatterns;
             this.openNotification(
               "Redirecting to new created Pattern ...",
@@ -195,8 +194,6 @@ export default {
             this.callConcretePatterns;
             this.onTimeout();
           } else if (this.errorMessage.length > 0) {
-            console.log("An error is occuring");
-            console.log(this.errorMessage);
             this.getCorrectErrorMessage();
           }
         } else {

@@ -45,8 +45,5 @@ export default {
   methods: {
     ...mapActions(["callConcretePatternText"]),
   },
-  created() {
-    console.log(this.concretePatternTextObject);
-  },
 };
 </script>

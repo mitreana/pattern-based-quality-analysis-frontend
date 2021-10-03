@@ -92,7 +92,6 @@ export default {
       this.currentPage = pageNumber;
     },
     filterElements(concretePattern) {
-      console.log("Filtering entered");
       if (this.search && this.search.length === 0) {
         return true;
       }

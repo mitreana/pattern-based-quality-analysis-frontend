@@ -2,17 +2,14 @@ const mutations = {
   changeUserAbstractPattern: (state, userChoice) => {
     state.userAbstractPattern = userChoice;
     state.submitted = false;
-    state.validationErrors.abstractPattern = false;
   },
   changeUserAbstractPatternText: (state, userChoice) => {
     state.userAbstractPatternText = userChoice;
     state.submitted = false;
-    state.validationErrors.abstractPatternText = false;
   },
   changeUserConcretePatternName: (state, userChoice) => {
     state.userConcretePatternName = userChoice;
     state.submitted = false;
-    state.validationErrors.concretePatternName = false;
   },
   changeActiveConcretePattern: (state, userChoice) => {
     state.activeConcretePattern = userChoice;
