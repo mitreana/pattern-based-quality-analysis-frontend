@@ -142,8 +142,7 @@ export default {
       "callConcretePatterns",
     ]),
 
-    // mapActions is a method which returs an object with the methods which names
-    // we have declared on the array taken as the first argument
+    
     selectAbstractPattern: function(value) {
       this.onUserAbstractPatternChoice(value);
     },
