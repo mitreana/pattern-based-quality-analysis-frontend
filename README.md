@@ -1,4 +1,4 @@
-# vue-test
+# pattern-based-quality-analysis-frontend
 
 ## Project setup
 ```
