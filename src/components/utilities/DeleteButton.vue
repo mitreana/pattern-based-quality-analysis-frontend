@@ -1,5 +1,4 @@
 <template>
-  <Modal :patternName="userConcretePatternName" :onDelete="deletePattern" />
   <button
     id="deleteButton"
     class="btn btn-danger"
@@ -12,11 +11,9 @@
 
 <script>
 import { mapActions } from "vuex";
-import Modal from "./Modal.vue";
 
 export default {
   props: ["userConcretePatternName"],
-  components: { Modal },
   data: () => {
     return { clicked: false };
   },

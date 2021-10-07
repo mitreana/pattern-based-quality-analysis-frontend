@@ -186,7 +186,7 @@ export default {
           if (this.successMessage.length > 0) {
             this.callConcretePatterns;
             this.openNotification(
-              "Redirecting to new created Pattern ...",
+              "Redirecting to newly created Pattern ...",
               this.successMessage,
               "success"
             );
@@ -226,6 +226,7 @@ export default {
   created() {
     this.callAbstractPatterns();
   },
+ 
 };
 </script>
 

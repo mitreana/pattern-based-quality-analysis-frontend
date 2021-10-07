@@ -11,7 +11,7 @@
     "
   >
     <div class="card-body">
-      <h3 ref="title" class="card-title">Edit an existing concrete pattern</h3>
+      <h3 ref="title" class="card-title">Edit concrete pattern</h3>
       <el-form label-position="left">
         <div id="name">
           <el-form-item

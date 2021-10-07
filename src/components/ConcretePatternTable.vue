@@ -64,10 +64,9 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import Modal from "../components/utilities/Modal.vue";
+
 
 export default {
-  components: { Modal },
   data: () => {
     return {
       userConcretePatternChoice: "",
