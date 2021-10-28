@@ -15,9 +15,10 @@
         >
           <el-option
             v-for="item in abstractPatterns"
-            :key="item"
-            :label="item"
-            :value="item"
+            :key="item.Name"
+            :label="item.Name"
+            :value="item.Name"
+            :title="item.Description"
           >
           </el-option>
         </el-select>
@@ -43,9 +44,10 @@
         >
           <el-option
             v-for="item in abstractPatternTexts"
-            :key="item"
-            :label="item"
-            :value="item"
+            :key="item.Name"
+            :label="item.Name"
+            :value="item.Name"
+            :title="item.Preview"
           >
           </el-option>
         </el-select>
@@ -74,7 +76,7 @@
         type="success"
         @click="
           () => {
-            submitForm('form'), onTimeout();
+            submitForm('form');
           }
         "
         >Create</el-button
@@ -142,7 +144,6 @@ export default {
       "callConcretePatterns",
     ]),
 
-    
     selectAbstractPattern: function(value) {
       this.onUserAbstractPatternChoice(value);
     },
@@ -181,20 +182,28 @@ export default {
     },
     submitForm(formName) {
       this.$refs[formName].validate(async (valid) => {
-        if (valid) {
-          await this.onSubmit();
-          if (this.successMessage.length > 0) {
-            this.callConcretePatterns;
+        if (valid && !this.userConcretePatternName.includes(" ")) {
+            await this.onSubmit();
+            if (this.successMessage.length > 0) {
+              this.callConcretePatterns;
+              this.openNotification(
+                "Redirecting to newly created Pattern ...",
+                this.successMessage,
+                "success"
+              );
+              this.callConcretePatterns;
+              this.onTimeout();
+            }
+        }
+        if (this.userConcretePatternName.includes(" ")) {
             this.openNotification(
-              "Redirecting to newly created Pattern ...",
-              this.successMessage,
-              "success"
+              "Error Message",
+              "Please give a name that does not include empty spaces!",
+              "error"
             );
-            this.callConcretePatterns;
-            this.onTimeout();
-          } else if (this.errorMessage.length > 0) {
-            this.getCorrectErrorMessage();
           }
+        if (this.errorMessage.length > 0) {
+          this.getCorrectErrorMessage();
         } else {
           return false;
         }
@@ -213,7 +222,6 @@ export default {
           this.$router.push(
             `/concretePatterns/edit/${this.userConcretePatternName}`
           );
-          this.done = false;
         }
       }, 6000);
     },
@@ -226,7 +234,7 @@ export default {
   created() {
     this.callAbstractPatterns();
   },
- 
+
 };
 </script>
 

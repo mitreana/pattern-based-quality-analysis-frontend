@@ -9,8 +9,8 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import Navbar from "../components/Navbar.vue";
-import ConcretePatternTable from "../components/ConcretePatternTable.vue";
+import Navbar from "../components/navigation/Navbar.vue";
+import ConcretePatternTable from "../components/tables/ConcretePatternTable.vue";
 import SelectInput from "../components/inputs/SelectInput.vue";
 
 export default {

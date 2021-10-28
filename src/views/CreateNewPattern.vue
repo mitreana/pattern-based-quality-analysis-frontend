@@ -1,7 +1,7 @@
 <template>
   <div class="createNewPattern card">
     <div class="card-body">
-      <h3 ref="title" class="card-title">Create a new pattern</h3>
+      <h3 ref="title" class="card-title">Create a new concrete pattern</h3>
       <AbstractPatternForm></AbstractPatternForm>
     </div>
   </div>
@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import AbstractPatternForm from "../components/AbstractPatternsForm.vue";
-import Navbar from "../components/Navbar.vue";
+import AbstractPatternForm from "../components/forms/AbstractPatternsForm.vue";
+import Navbar from "../components/navigation/Navbar.vue";
 import { mapState, mapActions } from "vuex";
 
 export default {

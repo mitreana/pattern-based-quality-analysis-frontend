@@ -2,8 +2,7 @@
   <div
     class="parameter-container d-flex py-2 justify-content-center"
     v-if="
-      concretePatternParameters &&
-        Object.keys(concretePatternParameters).length > 0
+      concretePatternParameters && Object.keys(concretePatternParameters).length
     "
   >
     <div class="value-container px-2">
@@ -105,14 +104,14 @@
 </template>
 
 <script>
-import TextInput from "./inputs/TextInput.vue";
-import NumberInput from "./inputs/NumberInput.vue";
-import SelectInput from "./inputs/SelectInput.vue";
-import DateTimeInput from "./inputs/DateTimeInput.vue";
-import DateInput from "./inputs/DateInput.vue";
-import TimeInput from "./inputs/TimeInput.vue";
-import CheckboxInput from "./inputs/CheckboxInput.vue";
-import ConcretePatternService from "../services/ConcretePatternService";
+import TextInput from "../inputs/TextInput.vue";
+import NumberInput from "../inputs/NumberInput.vue";
+import SelectInput from "../inputs/SelectInput.vue";
+import DateTimeInput from "../inputs/DateTimeInput.vue";
+import DateInput from "../inputs/DateInput.vue";
+import TimeInput from "../inputs/TimeInput.vue";
+import CheckboxInput from "../inputs/CheckboxInput.vue";
+import ConcretePatternService from "../../services/ConcretePatternService";
 import { mapState, mapActions } from "vuex";
 
 export default {
@@ -197,16 +196,19 @@ export default {
       this.concretePatternParameters[this.fragment.URL] &&
       this.concretePatternParameters[this.fragment.URL].defaultValue &&
       this.concretePatternParameters[this.fragment.URL].defaultValue;
+
     const URL = this.fragment && this.fragment.URL && this.fragment.URL;
 
     const defaultType =
       this.concretePatternParameters[this.fragment.URL] &&
       this.concretePatternParameters[this.fragment.URL].defaultType &&
       this.concretePatternParameters[this.fragment.URL].defaultType;
+
     if (!this.added) {
       this.onValueChange(defaultValue, URL);
       this.onTypeChange(defaultType, URL);
     }
   },
+  
 };
 </script>

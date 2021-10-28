@@ -5,7 +5,7 @@
         :value="isoDate"
         v-model="selectedDate"
         type="text"
-        placeholder="Sel,ect a date"
+        placeholder="Select a date"
         @change="onDateChange"
         class="w-100"
       >
@@ -23,7 +23,7 @@ export default {
   props: ["value", "change"],
   data() {
     return {
-      selectedDate: this.value ? this.value : null,
+      selectedDate: this.value ? new Date(this.value) : null,
     };
   },
   computed: {

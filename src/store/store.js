@@ -1,25 +1,16 @@
 import { createStore } from "vuex";
 import actions from "./actions";
 import mutations from "./mutations";
+import abstractPatternInitialState from "./abstractPatterns/abstractPatternsState";
+import concretePatternInitialState from "./concretePatterns/concretePatternsState";
+import concretePatternSentenceInitialState from "./concretePatternSentence/concretePatternSentenceState";
+import messageInitialState from "./message/messageState";
 
 const initialData = {
-  userAbstractPattern: "",
-  userAbstractPatternText: "",
-  userConcretePatternName: "",
-  userConcretePatternText: "",
-  userParameterValue: "",
-  userParameterUrl: "",
-  abstractPatterns: [],
-  concretePatterns: [],
-  concretePatternNameTableChoice: "",
-  abstractPatternTexts: [],
-  concretePatternTextObject: {},
-  errorMessage: "",
-  successMessage: "",
-  submited: false,
-  concretePatternParameters: {},
-  activeConcretePattern: "",
-  activeParameter: "",
+  ...abstractPatternInitialState,
+  ...concretePatternInitialState,
+  ...concretePatternSentenceInitialState,
+  ...messageInitialState,
 };
 
 const store = createStore({

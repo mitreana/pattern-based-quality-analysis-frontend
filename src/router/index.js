@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import CreateNewPattern from "../views/CreateNewPattern.vue";
 import ConcretePatterns from "../views/ConcretePatterns.vue";
 import EditConcretePatternText from "../views/EditConcretePatternText.vue";
+import RunTest from "../views/RunTest.vue"
 
 const routes = [
   {
@@ -23,6 +24,11 @@ const routes = [
     name: "EditConcretePatternText",
     component: EditConcretePatternText,
   },
+  {
+    path: "/runTest",
+    name : "RunTest",
+    component: RunTest
+  }
 ];
 
 const router = createRouter({

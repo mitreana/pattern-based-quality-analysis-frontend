@@ -1,10 +1,6 @@
 <template>
   <el-menu
-    :default-active="
-      currentRouteName.includes('concretePatterns')
-        ? '/concretePatterns'
-        : '/createNewPattern'
-    "
+    :default-active="currentRouteName"
     class="el-menu-demo"
     mode="horizontal"
     background-color="#545c64"
@@ -20,6 +16,9 @@
       index="/concretePatterns"
       @click="navigateTo('/concretePatterns')"
       >Concrete Patterns</el-menu-item
+    >
+    <el-menu-item index="/runTest" @click="navigateTo('/runTest')"
+      >Test A Database</el-menu-item
     >
   </el-menu>
 </template>
@@ -48,6 +47,5 @@ export default {
 #router {
   text-align: center;
   margin-right: 40px;
- 
 }
 </style>

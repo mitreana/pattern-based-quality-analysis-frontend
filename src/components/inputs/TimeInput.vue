@@ -2,7 +2,7 @@
   <div class="date-container position-relative">
     <el-time-picker
       v-model="selectedTime"
-      placeholder="Arbitrary time"
+      placeholder="Select time"
       @change="onValueChange"
       class="w-100"
     >
@@ -12,13 +12,19 @@
 
 <script>
 import moment from "moment";
-const isoTimeFormat = "HH:MM:SS";
+const isoTimeFormat = "HH:mm:ss";
 
 export default {
   props: ["value", "change"],
   methods: {
     convertToDate(timestamp) {
-      const [hours, minutes, seconds] = timestamp.split(":");
+      let [hours, minutes, seconds] = timestamp.split(":");
+      if (!hours || !minutes || !seconds) {
+        hours = 12;
+        minutes = 0;
+        seconds = 0;
+      }
+      // 1 January 1970
       const baseDate = new Date(1970, 0, 0);
       baseDate.setTime(
         baseDate.getTime() +

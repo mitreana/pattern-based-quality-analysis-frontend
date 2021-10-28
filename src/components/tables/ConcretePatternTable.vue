@@ -1,6 +1,6 @@
 <template>
   <el-table
-    v-if="concretePatterns && concretePatterns.length > 0"
+    v-if="concretePatterns && concretePatterns.length > 0 && concretePatterns.Name && concretePatterns.Name > 0"
     :data="getFilteredPatterns()"
     style="width: 100%"
   >
@@ -64,7 +64,6 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-
 
 export default {
   data: () => {
@@ -158,6 +157,7 @@ export default {
     },
     async handleDelete() {
       await this.onDelete(this.userConcretePatternChoice);
+
       this.callConcretePatterns();
       //location.reload();
     },

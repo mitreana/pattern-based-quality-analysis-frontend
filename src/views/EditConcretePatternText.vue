@@ -44,7 +44,7 @@
         </div>
 
         <el-form-item label="Sentence" class="d-flex flex-column text-justify">
-          <ConcretePattern
+          <ConcretePatternSentenceContainer
             v-if="
               concretePatternTextObject &&
                 concretePatternTextObject.Fragments &&
@@ -52,9 +52,6 @@
             "
             :fragments="concretePatternTextObject.Fragments"
           />
-          <el-button type="primary" plain @click="finalize"
-            >Finalize Concretisation</el-button
-          >
         </el-form-item>
       </el-form>
     </div>
@@ -63,45 +60,17 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import ConcretePatternText from "../components/ConcretePatternText.vue";
-import ConcretePattern from "../components/ConcretePattern.vue";
+import ConcretePatternSentenceContainer from "../components/containers/ConcretePatternSentenceContainer.vue";
 
 export default {
-  components: { ConcretePatternText, ConcretePattern },
+  components: { ConcretePatternSentenceContainer },
   computed: mapState({
     concretePatternTextObject: (state) => {
       return state.concretePatternTextObject;
     },
-    successMessage: (state) => {
-      return state.successMessage;
-    },
-    errorMessage: (state) => {
-      return state.errorMessage;
-    },
   }),
   methods: {
-    ...mapActions(["callConcretePatternText", "onFinalization"]),
-    async finalize() {
-      const params = this.$route.params;
-      await this.onFinalization(params.concretePatternName);
-      if (this.successMessage.length > 0) {
-        this.openNotification(
-          "Success Message",
-          this.successMessage,
-          "success"
-        );
-      } else {
-        this.openNotification("Error Message", this.errorMessage, "error");
-      }
-    },
-    openNotification(title, message, type) {
-      this.$notify({
-        title,
-        message,
-        type,
-        position: "bottom-right",
-      });
-    },
+    ...mapActions(["callConcretePatternText"]),
   },
   created() {
     const params = this.$route.params;
