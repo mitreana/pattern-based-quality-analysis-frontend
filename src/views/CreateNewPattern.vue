@@ -1,8 +1,9 @@
 <template>
-  <div class="createNewPattern card">
-    <div class="card-body">
-      <h3 ref="title" class="card-title">Create a new concrete pattern</h3>
-      <AbstractPatternForm></AbstractPatternForm>
+  <div class="createNewPattern">
+    <div>
+      <h3 ref="title">Create a new concrete pattern</h3>
+      <!-- <AbstractPatternForm></AbstractPatternForm> -->
+      <AbstractPatternSteps></AbstractPatternSteps>
     </div>
   </div>
   <router-view />
@@ -10,6 +11,7 @@
 
 <script>
 import AbstractPatternForm from "../components/forms/AbstractPatternsForm.vue";
+import AbstractPatternSteps from "../components/steps/AbstractPatternSteps.vue";
 import Navbar from "../components/navigation/Navbar.vue";
 import { mapState, mapActions } from "vuex";
 
@@ -17,6 +19,7 @@ export default {
   name: "CreateNewPattern",
   components: {
     AbstractPatternForm,
+    AbstractPatternSteps,
     Navbar,
   },
 
@@ -96,11 +99,12 @@ export default {
 </script>
 <style>
 .createNewPattern {
-  width: 80%;
+  width: 100%;
   margin: auto;
 }
 
 .title {
   padding-left: 3%;
+  margin-top: 0px;
 }
 </style>

@@ -28,7 +28,7 @@ const routes = [
     path: "/runTest",
     name : "RunTest",
     component: RunTest
-  }
+  },
 ];
 
 const router = createRouter({

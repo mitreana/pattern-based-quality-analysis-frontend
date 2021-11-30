@@ -3,25 +3,15 @@ import AbstractPatternService from "../../services/AbstractPatternService";
 const abstractPatternsActions = {
   onUserAbstractPatternChoice: async (context, userChoice) => {
     context.commit("changeUserAbstractPattern", userChoice);
-
     const abstractPatternTextPayload = await AbstractPatternService.getAbstractPatternTexts(
       userChoice
-    );
-
-    abstractPatternTextPayload.data = abstractPatternTextPayload.data.replaceAll(
-      ", }",
-      "}"
-    );
-
-    const parsedAbstractPatternTextPayload = JSON.parse(
-      abstractPatternTextPayload.data
     );
 
     if (abstractPatternTextPayload.success) {
       context.commit("registerErrorMessage", "");
       context.commit(
         "registerAbstractPatternTexts",
-        parsedAbstractPatternTextPayload
+        abstractPatternTextPayload.data
       );
     } else {
       context.commit("registerErrorMessage", data.message);
@@ -32,20 +22,19 @@ const abstractPatternsActions = {
   },
   callAbstractPatterns: async (context) => {
     const abstractPatternPayload = await AbstractPatternService.getAbstractPatterns();
-
+    console.log(abstractPatternPayload)
     if (abstractPatternPayload.success) {
-      abstractPatternPayload.data = abstractPatternPayload.data.replaceAll(
-        ", }",
-        "}"
-      );
+    //   abstractPatternPayload.data = abstractPatternPayload.data.replaceAll(
+    //     ", }",
+    //     "}"
+    //   );
 
-      const parsedAbstractPatternPayload = JSON.parse(
-        abstractPatternPayload.data
-      );
-      console.log(parsedAbstractPatternPayload);
-
+    //   const parsedAbstractPatternPayload = JSON.parse(
+    //     abstractPatternPayload.data
+    //   );
+     
       context.commit("registerErrorMessage", "");
-      context.commit("registerAbstractPatterns", parsedAbstractPatternPayload);
+      context.commit("registerAbstractPatterns", abstractPatternPayload.data);
     } else {
       context.commit(
         "registerErrorMessage",

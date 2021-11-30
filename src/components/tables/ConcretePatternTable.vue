@@ -1,18 +1,21 @@
 <template>
+ <div class="card">
   <el-table
-    v-if="concretePatterns && concretePatterns.length > 0 && concretePatterns.Name && concretePatterns.Name > 0"
+    v-if="concretePatterns && concretePatterns.length > 0"
     :data="getFilteredPatterns()"
     style="width: 100%"
+    align="center"
+    width="100%"
+    size="medium"
   >
-    <el-table-column label="Pattern Name" prop="PatternName"> </el-table-column>
-    <el-table-column label="Pattern Text Name" prop="PatternTextName">
-    </el-table-column>
-    <el-table-column align="right">
+    <el-table-column width="210%" label="Name" prop="Name" class="columnName"> </el-table-column>
+    <el-table-column width="600%" label="Description" prop="Description"></el-table-column>
+    <el-table-column width="180%" align="right">
       <template #header>
         <el-input
           v-model="search"
           size="mini"
-          placeholder="Filter by pattern name"
+          placeholder="Filter by name"
           v-if="currentPage === 1"
         />
       </template>
@@ -25,7 +28,7 @@
           plain
           @click="
             () => {
-              navigateTo(`/concretePatterns/edit/${scope.row.PatternName}`);
+              navigateTo(`/concretePatterns/edit/${scope.row.Name}`);
             }
           "
           title="Click to edit"
@@ -46,9 +49,10 @@
             }
           "
         ></el-button>
-      </template>
+      </template> 
     </el-table-column>
   </el-table>
+  </div>
   <div
     class="block my-4"
     v-if="concretePatterns && concretePatterns.length > 0"
@@ -58,7 +62,7 @@
       :total="concretePatterns.length"
       v-on:current-change="onPageChange"
     >
-    </el-pagination>
+    </el-pagination> 
   </div>
 </template>
 
@@ -71,10 +75,13 @@ export default {
       userConcretePatternChoice: "",
       search: "",
       currentPage: 1,
+      tableData:[],
     };
   },
   computed: mapState({
     concretePatterns: (state) => {
+     let tableData= state.concretePatterns
+      console.log(tableData)
       return state.concretePatterns;
     },
     userConcretePatternName: (state) => {
@@ -98,8 +105,8 @@ export default {
         return true;
       }
 
-      if (concretePattern && concretePattern.PatternName) {
-        return concretePattern.PatternName.toLowerCase().includes(
+      if (concretePattern && concretePattern.Name) {
+        return concretePattern.Name.toLowerCase().includes(
           this.search.toLowerCase()
         );
       } else {
@@ -111,13 +118,13 @@ export default {
         .filter((concretePattern) => {
           return (
             typeof concretePattern === "object" &&
-            concretePattern.hasOwnProperty("PatternName")
+            concretePattern.hasOwnProperty("Name")
           );
         })
         .filter(this.filterElements)
         .slice(10 * this.currentPage - 10, 10 * this.currentPage)
         .filter((concretePattern) => {
-          return concretePattern && concretePattern.PatternName;
+          return concretePattern && concretePattern.Name;
         });
 
       return filteredConcretePatterns;
@@ -153,13 +160,11 @@ export default {
         });
     },
     getConcretePatternName(row) {
-      this.userConcretePatternChoice = row.PatternName;
+      this.userConcretePatternChoice = row.Name;
     },
     async handleDelete() {
       await this.onDelete(this.userConcretePatternChoice);
-
       this.callConcretePatterns();
-      //location.reload();
     },
   },
   created() {
@@ -168,4 +173,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+ .card{
+   width: 90%;
+ }
+</style>
+

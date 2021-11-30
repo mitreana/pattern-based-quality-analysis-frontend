@@ -5,12 +5,16 @@ import abstractPatternInitialState from "./abstractPatterns/abstractPatternsStat
 import concretePatternInitialState from "./concretePatterns/concretePatternsState";
 import concretePatternSentenceInitialState from "./concretePatternSentence/concretePatternSentenceState";
 import messageInitialState from "./message/messageState";
+import databaseInitialState from "./databases/databaseState"
+import finalizedPatternsInitialData from "./finalizedPatterns/finalizedPatternsState";
 
 const initialData = {
   ...abstractPatternInitialState,
   ...concretePatternInitialState,
   ...concretePatternSentenceInitialState,
   ...messageInitialState,
+  ...databaseInitialState,
+  ...finalizedPatternsInitialData
 };
 
 const store = createStore({

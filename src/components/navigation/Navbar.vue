@@ -18,7 +18,7 @@
       >Concrete Patterns</el-menu-item
     >
     <el-menu-item index="/runTest" @click="navigateTo('/runTest')"
-      >Test A Database</el-menu-item
+      >Databases</el-menu-item
     >
   </el-menu>
 </template>

@@ -39,30 +39,16 @@ const concretePatternsActions = {
   callConcretePatterns: async (context) => {
     const concretePatternPayload = await ConcretePatternService.getConcretePatterns();
 
-    console.log(parsedconcretePatternPayload);
     if (concretePatternPayload.success) {
-      // concretePatternPayload.data = concretePatternPayload.data.replaceAll(
-      //   ", }",
-      //   "}"
-      // );
-      // const parsedconcretePatternPayload = JSON.parse(
-      //   concretePatternPayload.data
-      // );
-      const concretePatterns = await Promise.all(
-        concretePatternPayload.data.Name.map(async (concretePattern) => {
-          const concretePatternTextPayload = await ConcretePatternService.getConcretePatternText(
-            concretePattern
-          );
-          return Promise.resolve(concretePatternTextPayload.data);
-        })
+      concretePatternPayload.data = concretePatternPayload.data.replaceAll(
+        ", }",
+        "}"
+      );
+      const parsedconcretePatternPayload = JSON.parse(
+        concretePatternPayload.data
       );
       context.commit("registerErrorMessage", "");
-      context.commit(
-        "registerConcretePatterns",
-        concretePatterns.filter(
-          (concretePattern) => concretePattern.PatternName
-        )
-      );
+      context.commit("registerConcretePatterns", parsedconcretePatternPayload);
     } else {
       context.commit(
         "registerErrorMessage",
@@ -85,49 +71,8 @@ const concretePatternsActions = {
         "registerConcretePatternText",
         concretePatternPayloadToJson.data
       );
-      let index = 1;
-      const parameterObject = concretePatternPayloadToJson.data.Fragments.filter(
-        (d) => typeof d === "object"
-      ).reduce((accumulator, value) => {
-        //{"url":{id:"1",value:"something"},"url1":{id:"2",value:"something"}}
-        accumulator[value.URL] = {
-          id: index,
-          value: value.Value !== undefined ? String(value.Value) : "",
-          defaultValue: value.Value ? String(value.Value) : "",
-          type: value.Type && value.Type === "Untyped" ? "Text" : value.Type,
-          defaultType:
-            value.Type && value.Type === "Untyped" ? "Text" : value.Type,
-          visible:
-            !value.hasOwnProperty("Dependent") ||
-            !!(
-              value.Dependent &&
-              concretePatternPayloadToJson.data.Fragments.find((parameter) => {
-                return (
-                  parameter &&
-                  parameter.Enable &&
-                  parameter.Enable.Parameter &&
-                  parameter.Enable.Parameter === value.URL &&
-                  parameter.Enable.If === parameter.Value
-                );
-              })
-            ),
-          dependent: concretePatternPayloadToJson.data.Fragments.find(
-            (parameter) => {
-              return (
-                parameter &&
-                parameter.Enable &&
-                parameter.Enable.Parameter &&
-                parameter.Enable.Parameter === value.URL
-              );
-            }
-          ),
-          done: false,
-        };
-        index++;
-        return accumulator;
-      }, {});
-      console.log(parameterObject);
-      context.commit("initializeParameters", parameterObject);
+
+      //   context.commit("initializeParameters", concretePatternPayloadToJson.data);
     } else {
       context.commit(
         "registerErrorMessage",
@@ -147,6 +92,19 @@ const concretePatternsActions = {
     }
 
     context.commit("resetMessages");
+  },
+  onFragmentValueChange: (context, { fragmentName, fragmentValue }) => {
+    context.commit("updateFragmentValue", {
+      name: fragmentName,
+      value: fragmentValue,
+    });
+  },
+
+  onFragmentTypeChange: (context, { fragmentName, fragmentType }) => {
+    context.commit("updateFragmentType", {
+      name: fragmentName,
+      type: fragmentType,
+    });
   },
 };
 

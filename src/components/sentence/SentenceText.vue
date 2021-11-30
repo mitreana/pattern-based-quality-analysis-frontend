@@ -1,10 +1,5 @@
 <template>
-  <div
-    v-if="
-      concretePatternParameters &&
-        Object.keys(concretePatternParameters).length > 0
-    "
-  >
+  <div v-if="fragments && fragments.length > 0">
     <p>
       <span
         v-for="(fragment, index) in fragments"
@@ -22,38 +17,33 @@
           data-toggle="tooltip"
           data-placement="bottom"
           title="Click to edit"
-          @click="() => selectActiveParameter(fragment.URL)"
-          :type="
-            `${
-              concretePatternParameters[fragment.URL] &&
-              concretePatternParameters[fragment.URL].value &&
-              concretePatternParameters[fragment.URL].value.length > 0
-                ? 'info'
-                : 'warning'
-            }`
-          "
+          @click="() => selectActiveParameter(fragment)"
+          :type="`${fragment && fragment.Value ? 'info' : 'warning'}`"
           :class="
             ` object-parameter ${
-              concretePatternParameters[fragment.URL] &&
-              concretePatternParameters[fragment.URL].value &&
-              concretePatternParameters[fragment.URL].value.length > 0
+              fragment && fragment.Value
                 ? 'object-parameter-default'
                 : 'object-parameter-empty'
             }`
           "
-          effect="plain"
           v-if="
             typeof fragment === 'object' &&
-              concretePatternParameters[fragment.URL] &&
-              concretePatternParameters[fragment.URL].visible
+              (!fragment.Dependent ||
+                (fragment.Dependent &&
+                  fragments.find((f) => {
+                    return (
+                      f.Enable &&
+                      fragment.URLs.includes(f.Enable.Parameter) &&
+                      f.Enable.If === f.Value
+                    );
+                  })))
           "
+          effect="plain"
         >
           {{
-            concretePatternParameters[fragment.URL] &&
-            concretePatternParameters[fragment.URL].value &&
-            concretePatternParameters[fragment.URL].value.length > 0
-              ? `${concretePatternParameters[fragment.URL].value} `
-              : (placeholder = "Empty value")
+            fragment && fragment.Value
+              ? `${fragment.Value} `
+              : `${fragment.ExampleValue} `
           }}
         </el-tag>
       </span>

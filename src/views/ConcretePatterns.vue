@@ -1,10 +1,14 @@
 <template>
-  <div class="card-body py-0">
-    <div class="concretePatternsView card">
+
+
+  
+    <!-- <div class="concretePatternsView card"></div>  -->
       <h3 ref="title" class="card-title my-4 mx-2">Concrete Patterns</h3>
+      <!-- <div class="card">
+         </div> -->
       <ConcretePatternTable></ConcretePatternTable>
-    </div>
-  </div>
+   
+ 
 </template>
 
 <script>
@@ -32,9 +36,11 @@ export default {
 };
 </script>
 <style>
-.concretePatternsView {
-  width: 90%;
+.card {
+  width: 80%;
   margin: auto;
   padding-top: 0%;
 }
+
+
 </style>

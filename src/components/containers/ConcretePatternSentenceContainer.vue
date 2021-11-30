@@ -1,22 +1,10 @@
 <template>
   <div class="concretePattern row">
     <SentenceText :fragments="fragments" />
-    <div
-      v-for="(fragment, index) in fragments"
-      :key="index"
-      class="d-inline-block col-12"
-    >
-      <SentenceParameter
-        v-if="typeof fragment === 'object' && fragment.URL === activeParameter"
-        :type="
-          concretePatternParameters[fragment.URL] &&
-          concretePatternParameters[fragment.URL].type
-            ? concretePatternParameters[fragment.URL].type
-            : null
-        "
-        :fragment="fragment"
-      />
-    </div>
+    <SentenceParameter
+      v-if="activeParameter && Object.keys(activeParameter).length > 0"
+      :activeParameter="activeParameter"
+    />
   </div>
   <el-button type="primary" plain @click="finalize"
     >Finalize Concretisation</el-button
@@ -31,6 +19,13 @@ import { mapActions, mapState } from "vuex";
 export default {
   props: ["fragments"],
   components: { SentenceParameter, SentenceText },
+  computed: {
+    ...mapState({
+      activeParameter: (state) => {
+        return state.activeParameter;
+      },
+    }),
+  },
   methods: {
     ...mapActions([
       "onInitializeParameters",
@@ -74,5 +69,4 @@ export default {
     },
   }),
 };
-//border-color: #c2dbfe;
 </script>

@@ -1,6 +1,6 @@
 const abstractPatternInitialState = {
-  userAbstractPattern: "",
-  userAbstractPatternText: "",
+  userAbstractPattern: null,
+  userAbstractPatternText: null,
   abstractPatterns: [],
   abstractPatternTexts: [],
 };

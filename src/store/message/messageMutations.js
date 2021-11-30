@@ -5,8 +5,11 @@ const messageMutations = {
   },
   registerErrorMessage: (state, errorMessage) => {
     state.errorMessage = errorMessage;
+    console.log(state.errorMessage);
   },
   registerSuccessMessage: (state, successMessage) => {
+    console.log("Mutation entered");
+    console.log(successMessage);
     state.successMessage = successMessage;
   },
 };

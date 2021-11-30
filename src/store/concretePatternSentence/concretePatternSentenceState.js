@@ -3,7 +3,7 @@ const concretePatternSentenceInitialState = {
   userParameterUrl: "",
   submited: false,
   concretePatternParameters: {},
-  activeParameter: "",
+  activeParameter: null,
 };
 
 export default concretePatternSentenceInitialState;

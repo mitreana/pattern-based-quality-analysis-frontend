@@ -1,10 +1,8 @@
 <template>
-    <div class="testDatabaseForm card">
-    <div class="card-body">
-      <h3 ref="title" class="card-title">Test a database</h3>
+    
       <TestDatabaseForm></TestDatabaseForm>
-    </div>
-  </div>
+
+  
 </template>
 
 <script>
