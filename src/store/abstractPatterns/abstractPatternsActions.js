@@ -24,14 +24,17 @@ const abstractPatternsActions = {
     const abstractPatternPayload = await AbstractPatternService.getAbstractPatterns();
     console.log(abstractPatternPayload)
     if (abstractPatternPayload.success) {
-    //   abstractPatternPayload.data = abstractPatternPayload.data.replaceAll(
-    //     ", }",
-    //     "}"
-    //   );
+      // abstractPatternPayload.data = abstractPatternPayload.data.replaceAll(
+      //   "\n",
+      //   ""
+      // )
+        
+      
 
-    //   const parsedAbstractPatternPayload = JSON.parse(
-    //     abstractPatternPayload.data
-    //   );
+      // const parsedAbstractPatternPayload = JSON.parse(
+      //   abstractPatternPayload.data
+      // );
+     // console.log(parsedAbstractPatternPayload)
      
       context.commit("registerErrorMessage", "");
       context.commit("registerAbstractPatterns", abstractPatternPayload.data);

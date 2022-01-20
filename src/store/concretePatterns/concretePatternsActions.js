@@ -38,17 +38,17 @@ const concretePatternsActions = {
   },
   callConcretePatterns: async (context) => {
     const concretePatternPayload = await ConcretePatternService.getConcretePatterns();
-
+    console.log(concretePatternPayload);
     if (concretePatternPayload.success) {
-      concretePatternPayload.data = concretePatternPayload.data.replaceAll(
-        ", }",
-        "}"
-      );
-      const parsedconcretePatternPayload = JSON.parse(
-        concretePatternPayload.data
-      );
+      // concretePatternPayload.data = concretePatternPayload.data.replaceAll(
+      //   ", }",
+      //   "}"
+      // );
+      // const parsedconcretePatternPayload = JSON.parse(
+      //   concretePatternPayload.data
+      // );
       context.commit("registerErrorMessage", "");
-      context.commit("registerConcretePatterns", parsedconcretePatternPayload);
+      context.commit("registerConcretePatterns", concretePatternPayload.data);
     } else {
       context.commit(
         "registerErrorMessage",
@@ -56,27 +56,26 @@ const concretePatternsActions = {
       );
     }
   },
+  concretizeParameter: async (context, parameterName) => {
+    context.commit("setConcretizedParameter", parameterName);
+  },
   callConcretePatternText: async (context, concretePatternName) => {
     const concretePatternPayload = await ConcretePatternService.getConcretePatternText(
       concretePatternName
     );
 
-    const concretePatternPayloadToJson = JSON.parse(
-      JSON.stringify(concretePatternPayload)
-    );
-
-    if (concretePatternPayloadToJson.success) {
+    if (concretePatternPayload.success) {
       context.commit("registerErrorMessage", "");
       context.commit(
         "registerConcretePatternText",
-        concretePatternPayloadToJson.data
+        concretePatternPayload.data
       );
 
       //   context.commit("initializeParameters", concretePatternPayloadToJson.data);
     } else {
       context.commit(
         "registerErrorMessage",
-        concretePatternPayloadToJson.data.message
+        concretePatternPayload.data.message
       );
     }
   },
@@ -105,6 +104,37 @@ const concretePatternsActions = {
       name: fragmentName,
       type: fragmentType,
     });
+  },
+  onValidatePatternAgainstSchema: async (context, patternName) => {
+    const validatePayload = await ConcretePatternService.postValidatePatternAgainstSchema(
+      patternName
+    );
+    console.log("validatePayload" + validatePayload.data);
+
+    if (validatePayload.success) {
+      context.commit("registerErrorMessage", "");
+      context.commit("registerSuccessMessage", validatePayload.data);
+    } else {
+      context.commit("registerErrorMessage", validatePayload.data.message);
+    }
+  },
+
+  onSetPatternDescription: async (context, body) => {
+    const patternDescriptionPayload = await ConcretePatternService.postPatternDescription(
+      body
+    );
+    console.log(patternDescriptionPayload.data);
+    if (patternDescriptionPayload.success) {
+      context.commit(
+        "registerPatternDescription",
+        patternDescriptionPayload.data
+      );
+    } else {
+      context.commit(
+        "registerErrorMessage",
+        patternDescriptionPayload.data.message
+      );
+    }
   },
 };
 

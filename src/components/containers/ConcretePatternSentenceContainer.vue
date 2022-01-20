@@ -5,10 +5,41 @@
       v-if="activeParameter && Object.keys(activeParameter).length > 0"
       :activeParameter="activeParameter"
     />
+
+    <div id="name">
+      <el-form-item
+        label="Pattern Description"
+        class=" description d-flex flex-column text-justify"
+        v-if="
+          sentenceDetails.PatternName && sentenceDetails.PatternName.length > 0
+        "
+      >
+        <el-input
+          type="textarea"
+          class="w-100"
+          v-model="sentenceDetails.PatternDescription"
+          @input="updateDescription"
+        >
+        </el-input>
+      </el-form-item>
+      <el-collapse class="concrete-pattern-info">
+        <el-collapse-item class="details" title="Show Pattern Details">
+          <div>
+            <p>Name : {{ sentenceDetails.PatternName }}</p>
+            <p>
+              Text Name :
+              {{ sentenceDetails.PatternTextName }}
+            </p>
+          </div>
+        </el-collapse-item>
+      </el-collapse>
+    </div>
+    <div>
+      <el-button class="finalizeButton" type="primary" plain @click="finalize"
+        >Finalize Concretisation</el-button
+      >
+    </div>
   </div>
-  <el-button type="primary" plain @click="finalize"
-    >Finalize Concretisation</el-button
-  >
 </template>
 
 <script>
@@ -17,12 +48,24 @@ import SentenceParameter from "../sentence/SentenceParameter.vue";
 import { mapActions, mapState } from "vuex";
 
 export default {
-  props: ["fragments"],
+  props: ["fragments", "sentenceDetails"],
   components: { SentenceParameter, SentenceText },
   computed: {
     ...mapState({
       activeParameter: (state) => {
         return state.activeParameter;
+      },
+      successMessage: (state) => {
+        return state.successMessage;
+      },
+      errorMessage: (state) => {
+        return state.errorMessage;
+      },
+      parameterExplanations: (state) => {
+        return state.parameterExplanations;
+      },
+      concretePatternParameters: (state) => {
+        return state.concretePatternParameters;
       },
     }),
   },
@@ -31,18 +74,55 @@ export default {
       "onInitializeParameters",
       "callConcretePatternText",
       "onFinalization",
+      "onValidatePatternAgainstSchema",
+      "toggleEmptyErrorMessage",
+      "onCallConcretePatternParameterExplanations",
+      "onSetPatternDescription",
     ]),
     async finalize() {
-      const params = this.$route.params;
-      await this.onFinalization(params.concretePatternName);
-      if (this.successMessage.length > 0) {
-        this.openNotification(
-          "Success Message",
-          this.successMessage,
-          "success"
-        );
+      const userDatabase = this.$store._state.data.userDatabase;
+      if (userDatabase && userDatabase.length > 0) {
+        this.toggleEmptyErrorMessage(false);
+        const params = this.$route.params;
+        await this.onValidatePatternAgainstSchema(params.concretePatternName);
+        if (this.successMessage.length > 0) {
+          await this.onFinalization(params.concretePatternName);
+          if (this.successMessage.length > 0) {
+            this.openNotification(
+              "Success Message",
+              this.successMessage,
+              "success"
+            );
+          } else {
+            this.openNotification(
+              "Error Message",
+              `Please enter a value for each input!\n${this.errorMessage}`,
+              "error"
+            );
+          }
+        }
+        if (this.errorMessage.length > 0) {
+          if (
+            this.errorMessage.includes("500")
+            
+          ) {
+            console.log("okkk")
+            this.openNotification(
+              "Error Message",
+              `Please enter reasonable values for each input!`,
+              "error"
+            );
+          }
+          else {
+            this.openNotification(
+              "Error Message",
+              `Please enter reasonable values for each input!`,
+              "error"
+            );
+          }
+        }
       } else {
-        this.openNotification("Error Message", this.errorMessage, "error");
+        this.toggleEmptyErrorMessage(true);
       }
     },
     openNotification(title, message, type) {
@@ -53,20 +133,40 @@ export default {
         position: "bottom-right",
       });
     },
+    updateDescription() {
+      const params = this.$route.params;
+      this.selectedDescription = this.sentenceDetails.PatternDescription;
+      console.log("----------" + this.selectedDescription);
+      this.onSetPatternDescription({
+        concretePatternName: params.concretePatternName,
+        description: this.selectedDescription,
+      });
+    },
   },
-  computed: mapState({
-    activeParameter: (state) => {
-      return state.activeParameter;
-    },
-    concretePatternParameters: (state) => {
-      return state.concretePatternParameters;
-    },
-    successMessage: (state) => {
-      return state.successMessage;
-    },
-    errorMessage: (state) => {
-      return state.errorMessage;
-    },
-  }),
+  created() {
+    if (!this.parameterExplanations) {
+      this.onCallConcretePatternParameterExplanations();
+    }
+  },
 };
 </script>
+
+<style scoped>
+.finalizeButton {
+  margin: auto;
+  display: flex;
+}
+.el-collapse-item {
+  text-align: start;
+  margin-top: 2%;
+  margin-left: 1%;
+}
+
+#name {
+  margin-bottom: 3%;
+}
+.description {
+  font-weight: bold;
+  margin-left: 1%;
+}
+</style>

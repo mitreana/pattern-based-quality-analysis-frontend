@@ -7,7 +7,7 @@ class FinalizedPatternsService {
 
   async getFinalizedPatterns() {
     try {
-      const payload =await axios.get(this.baseUrl);
+      const payload = await axios.get(this.baseUrl);
       return {
         success: true,
         data: payload.data,
@@ -22,25 +22,41 @@ class FinalizedPatternsService {
 
   //http://localhost:8080/qualitypatternmodel/finalized-patterns
   // /application?pattern-names=card_concrete_finalized
-  async postApplyPatterns(patternNames){
-      try{
-          const payload = await axios.post(
-            this.baseUrl + "/application?pattern-names=" + patternNames,
-            {
-              Headers: { Origin: "*" },
-            }
-          );
-        return{
-            success: true,
-            data:  payload.data
+  async postApplyPatterns(patternNames) {
+    try {
+      const payload = await axios.post(
+        this.baseUrl +
+          "/application?pattern-names=" +
+          patternNames.join("&pattern-names="),
+        {
+          Headers: { Origin: "*" },
         }
-
-      }catch(err){
-        return{
-            success:false,
-            data: err
-        }
-      }
+      );
+      return {
+        success: true,
+        data: payload.data,
+      };
+    } catch (err) {
+      return {
+        success: false,
+        data: err,
+      };
+    }
+  }
+  //http://localhost:8080/qualitypatternmodel/finalized-patterns/database/neww
+  async getFinalizedPatternsOfDatabase(localName) {
+    try {
+      const payload = await axios.get(this.baseUrl + "/database/" + localName);
+      return {
+        success: true,
+        data: payload.data,
+      };
+    } catch (err) {
+      return {
+        success: false,
+        data: err,
+      };
+    }
   }
 }
 

@@ -1,57 +1,69 @@
 <template>
- <div class="card">
-  <el-table
-    v-if="concretePatterns && concretePatterns.length > 0"
-    :data="getFilteredPatterns()"
-    style="width: 100%"
-    align="center"
-    width="100%"
-    size="medium"
-  >
-    <el-table-column width="210%" label="Name" prop="Name" class="columnName"> </el-table-column>
-    <el-table-column width="600%" label="Description" prop="Description"></el-table-column>
-    <el-table-column width="180%" align="right">
-      <template #header>
-        <el-input
-          v-model="search"
-          size="mini"
-          placeholder="Filter by name"
-          v-if="currentPage === 1"
-        />
-      </template>
-      <template #default="scope">
-        <el-button
-          size="mini"
-          icon="el-icon-edit"
-          type="primary"
-          circle
-          plain
-          @click="
-            () => {
-              navigateTo(`/concretePatterns/edit/${scope.row.Name}`);
-            }
-          "
-          title="Click to edit"
-        >
-        </el-button>
+  <div class="card">
+    <el-table
+      v-if="concretePatterns && concretePatterns.length > 0"
+      :data="getFilteredPatterns()"
+      align="center"
+      width="100%"
+      size="medium"
+      :row-class-name="column-name"
+      row-style="word-break: normal"
+    >
+      <el-table-column  style="background: red" width="210%" label="Name" prop="Name" class="columnName">
+      </el-table-column>
+      <el-table-column
+        width="150%"
+        label="Status"
+        prop="Status"
+      ></el-table-column>
+      <el-table-column
+        width="550%"
+        label="Description"
+        prop="Description"
+        class="columnName"
+      ></el-table-column>
+      <el-table-column width="180%" align="right">
+        <template #header>
+          <el-input
+            v-model="search"
+            size="mini"
+            placeholder="Filter by name"
+            v-if="currentPage === 1"
+          />
+        </template>
+        <template #default="scope">
+          <el-button
+            size="mini"
+            icon="el-icon-edit"
+            type="primary"
+            circle
+            plain
+            @click="
+              () => {
+                navigateTo(`/concretePatterns/edit/${scope.row.Name}`);
+              }
+            "
+            title="Click to edit"
+          >
+          </el-button>
 
-        <el-button
-          size="mini"
-          type="danger"
-          icon="el-icon-delete"
-          circle
-          plain
-          title="Click to delete"
-          @click="
-            () => {
-              getConcretePatternName(scope.row);
-              open();
-            }
-          "
-        ></el-button>
-      </template> 
-    </el-table-column>
-  </el-table>
+          <el-button
+            size="mini"
+            type="danger"
+            icon="el-icon-delete"
+            circle
+            plain
+            title="Click to delete"
+            @click="
+              () => {
+                getConcretePatternName(scope.row);
+                open();
+              }
+            "
+          ></el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
   <div
     class="block my-4"
@@ -62,7 +74,7 @@
       :total="concretePatterns.length"
       v-on:current-change="onPageChange"
     >
-    </el-pagination> 
+    </el-pagination>
   </div>
 </template>
 
@@ -75,13 +87,13 @@ export default {
       userConcretePatternChoice: "",
       search: "",
       currentPage: 1,
-      tableData:[],
+      tableData: [],
     };
   },
   computed: mapState({
     concretePatterns: (state) => {
-     let tableData= state.concretePatterns
-      console.log(tableData)
+      let tableData = state.concretePatterns;
+      console.log(tableData);
       return state.concretePatterns;
     },
     userConcretePatternName: (state) => {
@@ -174,8 +186,14 @@ export default {
 </script>
 
 <style scoped>
- .card{
-   width: 90%;
- }
-</style>
+.card {
+  width: 90%;
+}
+.description {
+  white-space: nowrap;
+}
 
+.column-name {
+  background: "red";
+}
+</style>

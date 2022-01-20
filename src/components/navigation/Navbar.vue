@@ -17,7 +17,7 @@
       @click="navigateTo('/concretePatterns')"
       >Concrete Patterns</el-menu-item
     >
-    <el-menu-item index="/runTest" @click="navigateTo('/runTest')"
+    <el-menu-item index="/databases" @click="navigateTo('/databases')"
       >Databases</el-menu-item
     >
   </el-menu>

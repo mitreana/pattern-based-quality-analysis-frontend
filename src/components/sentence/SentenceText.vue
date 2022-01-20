@@ -16,12 +16,46 @@
           }"
           data-toggle="tooltip"
           data-placement="bottom"
-          title="Click to edit"
+          :title="
+            `${
+              parameterExplanations
+                ? parameterExplanations.find((parameterExplanation) => {
+                    return parameterExplanation.Parameter === fragment.Role;
+                  })?.Explanation || fragment.Type
+                : 'Click to edit'
+            }`
+          "
           @click="() => selectActiveParameter(fragment)"
-          :type="`${fragment && fragment.Value ? 'info' : 'warning'}`"
+          :type="
+            `${
+              fragment &&
+              fragment.concretized &&
+              (fragment.Value.length > 0 ||
+                typeof fragment.Value === 'number' ||
+                typeof fragment.Value === 'boolean')
+                ? 'success'
+                : fragment.Value !== undefined &&
+                  fragment.Value !== null &&
+                  (fragment.Value.length > 0 ||
+                    typeof fragment.Value === 'number' ||
+                    typeof fragment.Value === 'boolean')
+                ? 'info'
+                : 'danger'
+            }`
+          "
           :class="
             ` object-parameter ${
-              fragment && fragment.Value
+              fragment &&
+              fragment.concretized &&
+              (fragment.Value.length > 0 ||
+                typeof fragment.Value === 'number' ||
+                typeof fragment.Value === 'boolean')
+                ? 'object-parameter-success'
+                : fragment.Value !== undefined &&
+                  fragment.Value !== null &&
+                  (fragment.Value.length > 0 ||
+                    typeof fragment.Value === 'number' ||
+                    typeof fragment.Value === 'boolean')
                 ? 'object-parameter-default'
                 : 'object-parameter-empty'
             }`
@@ -41,9 +75,14 @@
           effect="plain"
         >
           {{
-            fragment && fragment.Value
+            fragment &&
+            fragment.Value !== undefined &&
+            fragment.Value !== null &&
+            (fragment.Value.length > 0 ||
+              typeof fragment.Value === "number" ||
+              typeof fragment.Value === "boolean")
               ? `${fragment.Value} `
-              : `${fragment.ExampleValue} `
+              : `${fragment.Name} `
           }}
         </el-tag>
       </span>
@@ -60,9 +99,15 @@ export default {
     concretePatternParameters: (state) => {
       return state.concretePatternParameters;
     },
+    parameterExplanations: (state) => {
+      return state.parameterExplanations;
+    },
   }),
   methods: {
     ...mapActions(["selectActiveParameter"]),
+  },
+  created() {
+    console.log(this.fragments);
   },
 };
 </script>
@@ -77,8 +122,13 @@ export default {
   color: #ffffff !important;
 }
 
+.object-parameter-success:hover {
+  background: #9dcc5a;
+  color: #ffffff !important;
+}
+
 .object-parameter-empty:hover {
-  background: #ffa900;
+  background: #fd0a01;
   color: #ffffff !important;
 }
 </style>

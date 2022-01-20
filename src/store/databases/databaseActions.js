@@ -65,6 +65,26 @@ const databaseActions = {
       );
     }
   },
+
+  toggleEmptyErrorMessage: async (context, value) => {
+    context.commit("registerEmptyErrorMessage", value);
+  },
+
+  callDatabaseOfPattern: async (context, userChoice) => {
+    const databaseOfPatternPayload = await DatabaseService.getDatabasesOfPattern(
+      userChoice
+    );
+
+    if (databaseOfPatternPayload.success) {
+      context.commit("registerErrorMessage", "");
+      context.commit(
+        "changeDatabaseOfPattern",
+        databaseOfPatternPayload.data
+      );
+    } else {
+      context.commit("registerErrorMessage", databaseOfPatternPayload.message);
+    }
+  },
 };
 
 export default databaseActions;

@@ -4,10 +4,13 @@
     <RegisterDatabaseForm
       v-if="registerDatabaseComponent === true"
     ></RegisterDatabaseForm>
-    <DatabasesTable v-if="registerDatabaseComponent === false"></DatabasesTable>
-    <el-button class="showButton" @click="openFinalizedPatternsTable">Show Finalized Patterns</el-button>
+    <RegisterDatabaseForm
+      v-if="databases && databases.length == 0"
+    ></RegisterDatabaseForm>
+    <!-- <DatabasesTable v-if="registerDatabaseComponent === false"></DatabasesTable> -->
+    <DatabasesTable v-if="databases && databases.length > 0"></DatabasesTable>
   </div>
-  <div v-if="showFinalizedPatterns == true"><FinalizedPatternsTable></FinalizedPatternsTable></div>
+  
   <!-- <div class="card">
   <el-form :model="form" ref="form" label-position="left">
     <el-button type="primary" plain>Run Test</el-button>
@@ -22,13 +25,17 @@
     </div>
   </el-form>
   </div> -->
+  
+  <!-- <div v-if="finalizedPatternsOfDatabase && finalizedPatternsOfDatabase.length > 0"><FinalizedPatternsTable></FinalizedPatternsTable></div> -->
+
 </template>
+
 
 <script>
 import DatabasesTable from "../tables/DatabasesTable.vue"
 import RegisterDatabaseForm from "../forms/RegisterDatabaseForm.vue"
 import FinalizedPatternsTable from "../tables/FinalizedPatternsTable.vue"
-import { mapState} from 'vuex'
+import { mapActions,mapState} from 'vuex'
 export default {
   data:()=>{
     return{
@@ -44,10 +51,20 @@ export default {
     registerDatabaseComponent: (state) => {
       return state.registerDatabaseComponent;
     },
+     databases: (state) => {
+      return state.databases;
+    }
   }),methods:{
     openFinalizedPatternsTable(){
       this.showFinalizedPatterns = true
-    }
+    },finalizedPatternsOfDatabase: (state) => {
+      return state.finalizedPatternsOfDatabase;
+  },  ...mapActions([
+      "callDatabases",
+    ]),
+    created() {
+    this.callDatabases();
+  },
   }
 };
 </script>

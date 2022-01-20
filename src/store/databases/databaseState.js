@@ -1,6 +1,7 @@
 const databaseInitialState = {
   databases: [],
   userDatabase: "",
+  userDatabaseDefault: "",
   databaseRegistrationInfo: {
     user: "",
     password: "",
@@ -9,7 +10,8 @@ const databaseInitialState = {
     host: "",
     name: "",
   },
-  registerDatabaseComponent:false,
+  registerDatabaseComponent: false,
+  showEmptyErrorMessage: false,
 };
 
-export default databaseInitialState
+export default databaseInitialState;

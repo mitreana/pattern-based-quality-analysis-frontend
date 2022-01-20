@@ -10,7 +10,7 @@
 <div class="abstract-pattern-text-step-container">
   <p class="description-text">Click on any abstract pattern text in order to select it.</p>
   <el-scrollbar height="400px">
-    <p class="info">Abstract pattern : {{this.abstractPatternTexts[0].PatternName}}</p>
+    <p class="info">Variant texts of abstract pattern : {{this.abstractPatternTexts[0].PatternName}}</p>
     <div
       class="card abstract-pattern-text-card"
       v-for="abstractPatternText in abstractPatternTexts"

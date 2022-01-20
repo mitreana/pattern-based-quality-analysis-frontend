@@ -130,21 +130,6 @@
         :change="onTypeChange"
       ></SelectInput>
     </div>
-    <div class="button-container">
-      <el-button
-        type="primary"
-        @click="
-          () => {
-            onConcretiseParameter();
-            added = true;
-          }
-        "
-        plain
-        :disabled="!activeParameter.Value"
-      >
-        Add
-      </el-button>
-    </div>
   </div>
 </template>
 
@@ -158,6 +143,7 @@ import TimeInput from "../inputs/TimeInput.vue";
 import CheckboxInput from "../inputs/CheckboxInput.vue";
 import ConcretePatternService from "../../services/ConcretePatternService";
 import { mapState, mapActions } from "vuex";
+import _ from "lodash";
 
 export default {
   props: ["activeParameter"],
@@ -188,32 +174,58 @@ export default {
       types: ["Text", "Number", "Date", "Time", "DateTime", "Boolean"],
       concretised: false,
       added: false,
+      timeoutFn: null,
     };
   },
   methods: {
-    ...mapActions(["onFragmentValueChange", "onFragmentTypeChange"]),
+    ...mapActions([
+      "onFragmentValueChange",
+      "onFragmentTypeChange",
+      "concretizeParameter",
+    ]),
     onValueChange: function(value) {
-      this.onFragmentValueChange({
-        fragmentName: this.activeParameter.Name,
-        fragmentValue: value,
-      });
-      this.activeParameter.Value = value;
+      if (this.timeoutFn) {
+        clearTimeout(this.timeoutFn);
+      }
+      this.timeoutFn = setTimeout(() => {
+        this.onFragmentValueChange({
+          fragmentName: this.activeParameter.Name,
+          fragmentValue: value,
+        });
+        this.activeParameter.Value = value;
+        this.onConcretiseParameter();
+      }, 500);
     },
     onBooleanChange: function(value) {
-      this.onFragmentValueChange({
-        fragmentName: this.activeParameter.Name,
-        fragmentValue: value,
-      });
-      this.activeParameter.Value = Boolean(value);
+      if (this.timeoutFn) {
+        clearTimeout(this.timeoutFn);
+      }
+
+      this.timeoutFn = setTimeout(() => {
+        this.onFragmentValueChange({
+          fragmentName: this.activeParameter.Name,
+          fragmentValue: String(value),
+        });
+        this.activeParameter.Value = Boolean(value);
+        this.onConcretiseParameter();
+      }, 500);
     },
     onTypeChange: function(type) {
+      if (type === "Boolean") {
+        this.onFragmentValueChange({
+          fragmentName: this.activeParameter.Name,
+          fragmentValue: "false",
+        });
+      }
       this.onFragmentTypeChange({
         fragmentName: this.activeParameter.Name,
         fragmentType: type,
       });
       this.activeParameter.Type = type;
+      this.onConcretiseParameter();
     },
     async onConcretiseParameter() {
+      console.log("On concretise parameter entered");
       this.added = true;
       const concretiseParameterPayload = await Promise.all(
         this.activeParameter.URLs.map((url) =>
@@ -230,16 +242,16 @@ export default {
       );
 
       if (concretiseParameterPayload) {
-        this.concretised = true;
+        this.concretizeParameter(this.activeParameter.Name);
       }
 
-      if (this.concretised) {
-        this.openNotification(
-          "Success message",
-          "New Paremeter value was successfully added!",
-          "success"
-        );
-      }
+      // if (this.concretised) {
+      //   this.openNotification(
+      //     "Success message",
+      //     "New Paremeter value was successfully added!",
+      //     "success"
+      //   );
+      // }
     },
     openNotification(title, message, type) {
       this.$notify({
@@ -253,12 +265,12 @@ export default {
   created() {
     console.log("This active parameter", this.activeParameter);
   },
-  mounted(){
-    console.log("mounted entered")
+  mounted() {
+    console.log("mounted entered");
   },
-  unmounted(){
-console.log("unmounted entered")
-  }
+  unmounted() {
+    console.log("unmounted entered");
+  },
   // methods: {
   //   ...mapActions(["onUserParameterValueChoice", "onUserParameterTypeChoice"]),
   //   openNotification(title, message, type) {

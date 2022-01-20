@@ -1,49 +1,58 @@
 <template>
-<div class="steps">
-  <el-steps :active="active" finish-status="success" align-center  simple>
-    <el-step
-      title="Abstract Pattern"
-      description="Click on any abstract pattern in order to select it and view his texts"
-    >
-    </el-step>
-    <el-step
-      title="Abstract Pattern Text"
-      description="Click on any abstract pattern text in order to select it"
-    >
-    </el-step>
-    <el-step
-      title="Concrete Pattern Name"
-      description="Enter an appropriate concrete pattern name"
-    >
-    </el-step>
-  </el-steps>
+  <div class="steps">
+    <el-steps :active="active" finish-status="success" align-center simple>
+      <el-step
+        title="Abstract Pattern"
+        description="Click on any abstract pattern in order to select it and view his texts"
+      >
+      </el-step>
+      <el-step
+        title="Abstract Pattern Text"
+        description="Click on any abstract pattern text in order to select it"
+      >
+      </el-step>
+      <el-step
+        title="Concrete Pattern Name"
+        description="Enter an appropriate concrete pattern name"
+      >
+      </el-step>
+    </el-steps>
   </div>
-  <div class="step-container">
-    <AbstractPatternStep
-      v-if="this.active === 0"
-      :nextStepClicked="nextStepClicked"
-    />
-    <AbstractPatternTextStep
-      :nextStepClicked="nextStepClicked"
-      v-if="this.active === 1"
-    />
-    <ConcretePatternNameStep v-if="this.active === 2" :createButtonClicked="createButtonClicked"/>
-  </div>
-  <el-button-group class="control-button-group">
-    <el-button class="placeholder-button" v-if="this.active === 0"
-      >A button</el-button
-    >
-    <el-button @click="back" v-if="this.active !== 0" class="back-button mx-2">
-      <el-icon class="el-icon--right"><ArrowLeft /></el-icon>
-      Go Back</el-button
-    >
-    <el-button @click="next" v-if="this.active !== 2" class="next-button"
-      >Next step <el-icon class="el-icon--right"><ArrowRight /></el-icon
-    ></el-button>
-    <el-button @click="create" v-if="this.active === 2" class="create-button"
-      >Create <el-icon class="el-icon--right"><Plus/></el-icon
-    ></el-button>
-  </el-button-group>
+  <el-form>
+    <div class="step-container">
+      <AbstractPatternStep
+        v-if="this.active === 0"
+        :nextStepClicked="nextStepClicked"
+      />
+      <AbstractPatternTextStep
+        :nextStepClicked="nextStepClicked"
+        v-if="this.active === 1"
+      />
+      <ConcretePatternNameStep
+        v-if="this.active === 2"
+        :createButtonClicked="createButtonClicked"
+      />
+    </div>
+    <el-button-group class="control-button-group">
+      <el-button class="placeholder-button" v-if="this.active === 0"
+        >A button</el-button
+      >
+      <el-button
+        @click="back"
+        v-if="this.active !== 0"
+        class="back-button mx-2"
+      >
+        <el-icon class="el-icon--right"><ArrowLeft /></el-icon>
+        Go Back</el-button
+      >
+      <el-button @click="next" v-if="this.active !== 2" class="next-button"
+        >Next step <el-icon class="el-icon--right"><ArrowRight /></el-icon
+      ></el-button>
+      <el-button @click="create" v-if="this.active === 2" class="create-button"
+        >Create <el-icon class="el-icon--right"><Plus /></el-icon
+      ></el-button>
+    </el-button-group>
+  </el-form>
 </template>
 
 <script>
@@ -53,7 +62,7 @@
 import AbstractPatternStep from "./AbstractPatternStep.vue";
 import AbstractPatternTextStep from "./AbstractPatternTextStep.vue";
 import ConcretePatternNameStep from "./ConcretePatternNameStep.vue";
-import { ArrowLeft, ArrowRight, Plus,Edit } from "@element-plus/icons";
+import { ArrowLeft, ArrowRight, Plus, Edit } from "@element-plus/icons";
 import { mapState, mapActions } from "vuex";
 
 export default {
@@ -64,13 +73,13 @@ export default {
     ArrowLeft,
     ArrowRight,
     Plus,
-    Edit
+    Edit,
   },
   data() {
     return {
       active: 0,
       nextStepClicked: false,
-      createButtonClicked: false
+      createButtonClicked: false,
     };
   },
   computed: mapState({
@@ -91,7 +100,7 @@ export default {
     },
   }),
   methods: {
-    ...mapActions(["onCreateConcretePattern","clearMessages"]),
+    ...mapActions(["onCreateConcretePattern", "clearMessages"]),
     next() {
       let navigated = false;
       this.nextStepClicked = true;
@@ -112,15 +121,17 @@ export default {
       if (this.active > 0) {
         this.active -= 1;
       }
-    }, openNotification(title, message, type) {
+    },
+    openNotification(title, message, type) {
       this.$notify({
         title,
         message,
         type,
         position: "bottom-right",
-      })}, 
+      });
+    },
 
-      getCorrectErrorMessage() {
+    getCorrectErrorMessage() {
       if (this.errorMessage.includes("409")) {
         this.openNotification(
           "Error Message",
@@ -135,46 +146,48 @@ export default {
           "error"
         );
       }
-      },
+    },
     async onSubmit() {
-       await this.onCreateConcretePattern({
+      await this.onCreateConcretePattern({
         abstractPattern: this.userAbstractPattern,
         abstractPatternText: this.userAbstractPatternText,
         concretePatternName: this.userConcretePatternName,
       });
     },
-    async create(){
-        this.createButtonClicked= true
-        if (!this.userConcretePatternName.includes(" ") && this.userConcretePatternName.length > 0) {
-             await this.onSubmit();
-            if (this.successMessage.length > 0) {
-              this.openNotification(
-                "Redirecting to newly created Pattern ...",
-                this.successMessage,
-                "success"
-              );
-              this.callConcretePatterns;
-              this.onTimeout();
-            }
-        }
-         if (this.userConcretePatternName.includes(" ")) {
-            this.openNotification(
-              "Error Message",
-              "Please give a name that does not include empty spaces!",
-              "error"
-            );
-          }
-        if (this.errorMessage.length > 0) {
-          this.getCorrectErrorMessage();
-        }
-        this.clearMessages()
-    },
-     onTimeout() {
-      setTimeout(() => {
-          this.$router.push(
-            `/concretePatterns/edit/${this.userConcretePatternName}`
+    async create() {
+      this.createButtonClicked = true;
+      if (
+        !this.userConcretePatternName.includes(" ") &&
+        this.userConcretePatternName.length > 0
+      ) {
+        await this.onSubmit();
+        if (this.successMessage.length > 0) {
+          this.openNotification(
+            "Redirecting to newly created Pattern ...",
+            this.successMessage,
+            "success"
           );
-       
+          this.callConcretePatterns;
+          this.onTimeout();
+        }
+      }
+      if (this.userConcretePatternName.includes(" ")) {
+        this.openNotification(
+          "Error Message",
+          "Please give a name that does not include empty spaces!",
+          "error"
+        );
+      }
+      if (this.errorMessage.length > 0) {
+        this.getCorrectErrorMessage();
+      }
+      this.clearMessages();
+    },
+    onTimeout() {
+      setTimeout(() => {
+        this.$router.push(
+          `/concretePatterns/edit/${this.userConcretePatternName}`
+        );
       }, 6000);
     },
   },
@@ -211,10 +224,10 @@ export default {
   visibility: hidden;
   width: 50%;
 }
-.el-step__title{
-  width:60%
+.el-step__title {
+  width: 60%;
 }
-.steps{
+.steps {
   width: 100%;
   height: 50%;
 }

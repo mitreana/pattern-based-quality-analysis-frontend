@@ -1,5 +1,5 @@
 <template>
-    <!-- <el-collapse class="abstract-pattern-info">
+  <!-- <el-collapse class="abstract-pattern-info">
     <el-collapse-item title="Abstract Pattern">
       <div>
         <p>{{ this.userAbstractPatternName}}</p>
@@ -18,65 +18,70 @@
   </el-collapse> -->
   <p class="description-input">Enter an appropriate concrete pattern name.</p>
   <div class="info">
-    <p>Abstract pattern : {{this.userAbstractPattern}}</p>
-    <p>Abstract pattern text : {{this.userAbstractPatternText}}</p>
+    <p>Abstract pattern : {{ this.userAbstractPattern }}</p>
+    <p>Abstract pattern text : {{ this.userAbstractPatternText }}</p>
   </div>
 
   <div class="concrete-pattern-name-input">
     <p class="concrete-pattern-name-title">Concrete Pattern Name :</p>
-    <el-input
-          placeholder="Enter a name for the concrete pattern that does not exist already"
-          v-model="selectedConcretePatternName"
-          @input="selectConcretePatternName"
-          required
-        ></el-input>
-        </div>
+    <el-form-item
+      :error="
+        userConcretePatternName.length === 0 &&
+          createButtonClicked &&
+          'Please enter a concrete pattern name'
+      "
+    >
+      <el-input
+        placeholder="Enter a name for the concrete pattern that does not exist already"
+        v-model="selectedConcretePatternName"
+        @input="selectConcretePatternName"
+      ></el-input>
+    </el-form-item>
+  </div>
 </template>
 
 <script>
-import {mapState, mapActions} from "vuex"
+import { mapState, mapActions } from "vuex";
 
 export default {
-    props:["createButtonClicked"],
-   data(){
-       return {selectedConcretePatternName:""}
-   },
-    computed: mapState({
-        userAbstractPattern: (state) => {
-            return state.userAbstractPattern
-        },
-        userAbstractPatternText: (state)=>{
-            return state.userAbstractPatternText
-        },
-        userConcretePatternName: (state) => {
-            return state.userConcretePatternName
-        }
-
-    })
-   ,
-   
-   methods: {
-       ...mapActions(["onCreateConcretePattern","onUserConcretePatternNameChoice"]),
-       selectConcretePatternName(value){
-            this.selectedConcretePatternName = value
-            this.onUserConcretePatternNameChoice(value);
-       },
-   },
-}
+  props: ["createButtonClicked"],
+  data() {
+    return { selectedConcretePatternName: "" };
+  },
+  computed: mapState({
+    userAbstractPattern: (state) => {
+      return state.userAbstractPattern;
+    },
+    userAbstractPatternText: (state) => {
+      return state.userAbstractPatternText;
+    },
+    userConcretePatternName: (state) => {
+      return state.userConcretePatternName;
+    },
+  }),
+  methods: {
+    ...mapActions([
+      "onCreateConcretePattern",
+      "onUserConcretePatternNameChoice",
+    ]),
+    selectConcretePatternName(value) {
+      this.selectedConcretePatternName = value;
+      this.onUserConcretePatternNameChoice(value);
+    },
+  },
+};
 </script>
 
 <style scoped>
-.concrete-pattern-name-input{
-    width: 80%;
-    margin:auto;
-    margin-top: 5%;
-    margin-bottom: 12%;
-    
+.concrete-pattern-name-input {
+  width: 80%;
+  margin: auto;
+  margin-top: 5%;
+  margin-bottom: 12%;
 }
-.concrete-pattern-name-title{
-    text-align: left;
-    margin-bottom: 0%;
-   
+.concrete-pattern-name-title {
+  text-align: left;
+  margin-bottom: 0%;
 }
 .abstract-pattern-info {
   width: 80%;
@@ -93,19 +98,18 @@ export default {
   text-align: left;
 }
 
-.input{
-    margin: auto;
+.input {
+  margin: auto;
 }
 
-.description-input{
+.description-input {
   opacity: 0.5;
   margin-top: 1rem;
 }
-.info{
-  width:80%;
+.info {
+  width: 80%;
   text-align: left;
   margin: auto;
   margin-top: 5%;
-  
 }
 </style>

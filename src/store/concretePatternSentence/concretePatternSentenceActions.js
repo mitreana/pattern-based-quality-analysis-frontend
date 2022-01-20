@@ -90,6 +90,22 @@ const concretePatternSentenceActions = {
       context.commit("resetMessages");
     }, 1000);
   },
+
+  onCallConcretePatternParameterExplanations: async (context) => {
+    const concretePatternParameterExplanationPayload = await ConcretePatternService.callConcretePatternParameterExplanations();
+
+    if (concretePatternParameterExplanationPayload.success) {
+      context.commit(
+        "registerParameterExplanations",
+        concretePatternParameterExplanationPayload.data
+      );
+    } else {
+      context.commit(
+        "registerErrorMessage",
+        concretePatternParameterExplanationPayload.data.message
+      );
+    }
+  },
 };
 
 export default concretePatternSentenceActions;

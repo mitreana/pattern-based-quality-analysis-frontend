@@ -1,35 +1,32 @@
 <template>
   <div class="select">
-    <el-select
-      v-model="selectedDatabase"
-      placeholder="Select Database"
-      @change="selectDatabase"
-      :no-data-text="
-        databases.length == 0
-          ? 'No database. Please register a database first. '
-          : 'No data'
-      "
+    <el-form-item
+      :error="showEmptyErrorMessage ? 'Please select a database' : ''"
+      :show-message="showEmptyErrorMessage"
     >
-      <el-option
-        v-for="item in databases"
-        :key="item.LocalName"
-        :value="item.LocalName"
-        :title="`Host : ${item.Host}, Port : ${item.Port}, Name : ${item.Name}`"
+      <el-select
+        v-model="selectedDatabase"
+        placeholder="Select a Database"
+        @change="selectDatabase"
+        :no-data-text="
+          databases.length == 0
+            ? 'No database. Please register a database first. '
+            : 'No data'
+        "
       >
-        {{ item.LocalName }}
-      </el-option>
-    </el-select>
-    <div class="set" v-if="this.selectedDatabase.length > 0">
-      <el-button
-        type="primary"
-        class="setButton"
-        plain
-        @click="setDatabaseOfPattern"
-        >Set Database "{{ this.selectedDatabase }}" of Pattern "{{
-          params
-        }}"!</el-button
-      >
-    </div>
+        <el-option
+          v-for="item in databases"
+          :key="item.LocalName"
+          :value="item.LocalName"
+          :title="
+            `Host : ${item.Host}, Port : ${item.Port}, Name : ${item.Name}`
+          "
+          :selected="item.LocalName === defaultDatabase.LocalName"
+        >
+          {{ item.LocalName }}
+        </el-option>
+      </el-select>
+    </el-form-item>
   </div>
 </template>
 
@@ -63,7 +60,11 @@ export default {
     registerDatabaseComponent: (state) => {
       return state.registerDatabaseComponent;
     },
+    showEmptyErrorMessage: (state) => {
+      return state.showEmptyErrorMessage;
+    },
   }),
+  props: ["defaultDatabase"],
   methods: {
     ...mapActions([
       "callDatabases",
@@ -72,10 +73,14 @@ export default {
       "onDeleteDatabase",
       "onShowregisterDatabasecomponentOrNot",
       "onSetDatabaseOfPattern",
+      "toggleEmptyErrorMessage",
+      "callDatabaseOfPattern",
     ]),
 
     selectDatabase: function(value) {
       this.onUserDatabaseChoice(value);
+      this.setDatabaseOfPattern();
+      this.toggleEmptyErrorMessage(false);
     },
     openNotification(title, message, type) {
       this.$notify({
@@ -91,13 +96,13 @@ export default {
         localName: this.selectedDatabase,
         patternName: params,
       });
-      if (this.successMessage.length > 0) {
-        this.openNotification("Success", this.successMessage, "success");
-      }
+      // if (this.successMessage.length > 0) {
+      //   this.openNotification("Success", this.successMessage, "success");
+      // }
 
-      if (this.errorMessage.length > 0) {
-        this.openNotification("Error", this.errorMessage, "danger");
-      }
+      // if (this.errorMessage.length > 0) {
+      //   this.openNotification("Error", this.errorMessage, "danger");
+      // }
 
       this.clearMessages();
     },
@@ -109,7 +114,7 @@ export default {
     this.callDatabases();
   },
   updated() {
-    console.log("This is the success message", this.successMessage);
+    this.selectedDatabase = this.defaultDatabase.LocalName;
   },
 };
 </script>

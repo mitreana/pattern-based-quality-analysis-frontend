@@ -4,6 +4,7 @@
     @change="onValueChange"
     true-label
     v-model="checkboxValue"
+    :checked="Boolean(checkboxValue)"
     >True</el-checkbox
   >
 </template>
@@ -13,13 +14,18 @@ export default {
   props: ["value", "change"],
   data() {
     return {
-      checkboxValue: this.value === "true",
+      checkboxValue: String(this.value) === "true",
     };
   },
   methods: {
     onValueChange(value) {
       this.change(value === "");
     },
+  },
+
+  mounted() {
+    console.log("This is the checkbox value", this.checkboxValue);
+    console.log(this.value);
   },
 };
 </script>

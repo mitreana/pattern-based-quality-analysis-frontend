@@ -3,6 +3,8 @@ import CreateNewPattern from "../views/CreateNewPattern.vue";
 import ConcretePatterns from "../views/ConcretePatterns.vue";
 import EditConcretePatternText from "../views/EditConcretePatternText.vue";
 import RunTest from "../views/RunTest.vue"
+import RegisterDatabaseForm from "../components/forms/RegisterDatabaseForm.vue"
+import TestResultContainer from "../components/containers/TestResultContainer.vue";
 
 const routes = [
   {
@@ -25,9 +27,19 @@ const routes = [
     component: EditConcretePatternText,
   },
   {
-    path: "/runTest",
-    name : "RunTest",
-    component: RunTest
+    path: "/databases",
+    name: "RunTest",
+    component: RunTest,
+  },
+  {
+    path: "/databases/registerDatabase",
+    name: "RegisterDatabaseForm",
+    component: RegisterDatabaseForm,
+  },
+  {
+    path: "/results",
+    name: "TestResultContainer",
+    component: TestResultContainer,
   },
 ];
 

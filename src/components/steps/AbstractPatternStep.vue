@@ -69,6 +69,9 @@ export default {
   created() {
     this.callAbstractPatterns();
   },
+  updated(){
+    console.log(this.abstractPatterns)
+  }
  
 };
 </script>

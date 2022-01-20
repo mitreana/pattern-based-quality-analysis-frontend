@@ -4,6 +4,7 @@ const concretePatternSentenceInitialState = {
   submited: false,
   concretePatternParameters: {},
   activeParameter: null,
+  parameterExplanations: null,
 };
 
 export default concretePatternSentenceInitialState;

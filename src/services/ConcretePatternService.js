@@ -125,10 +125,48 @@ class ConcretePatternService {
   // /concrete-patterns/schema-validation/card_concrete_finalized
   async postValidatePatternAgainstSchema(patternName) {
     try {
-      const payload = await axios.post(
+      const payload = await axios.get(
         this.baseUrl + `/concrete-patterns/schema-validation/${patternName}`,
         { Headers: { Origin: "*" } }
       );
+      return {
+        success: true,
+        data: payload.data,
+      };
+    } catch (err) {
+      return {
+        success: false,
+        data: err,
+      };
+    }
+  }
+  //http://localhost:8080/qualitypatternmodel/concrete-patterns/description/1?description=somethingnew
+  async postPatternDescription(body) {
+    try {
+      const payload = await axios.post(
+        this.baseUrl +
+          `/concrete-patterns/description/${body.concretePatternName}?description=${body.description}`,
+        { Headers: { Origin: "*" } }
+      );
+      return {
+        success: true,
+        data: payload.data,
+      };
+    } catch (err) {
+      return {
+        success: false,
+        data: err,
+      };
+    }
+  }
+
+  async callConcretePatternParameterExplanations() {
+    try {
+      const payload = await axios.get(
+        this.baseUrl + "/parameter-explanations",
+        { Headers: { Origin: "*" } }
+      );
+
       return {
         success: true,
         data: payload.data,

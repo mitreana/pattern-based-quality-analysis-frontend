@@ -1,4 +1,7 @@
 const finalizedPatternsInitialData = {
-    finalizedPatterns:[],
+  finalizedPatterns: [],
+  finalizedPatternsOfDatabase: null,
+  applyPatternsResponse: null,
+  applyPatternsErrorMessage: null,
 };
 export default finalizedPatternsInitialData;

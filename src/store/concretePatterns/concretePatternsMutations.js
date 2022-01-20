@@ -21,7 +21,45 @@ const concretePatternsMutations = {
     state.concretePatterns = [...concretePatterns];
   },
   registerConcretePatternText: (state, concretePatternText) => {
+    if (concretePatternText.Fragments) {
+      concretePatternText.Fragments = concretePatternText.Fragments.map(
+        (fragment) => {
+          if (typeof fragment === "string") {
+            return fragment;
+          }
+
+          if (
+            fragment.Value !== null &&
+            fragment.Value !== undefined &&
+            (fragment.Value.length > 0 ||
+              typeof Number(fragment.Value) === "number")
+          ) {
+            return { ...fragment, concretized: true };
+          }
+
+          return {
+            ...fragment,
+            concretized: false,
+          };
+        }
+      );
+    }
     state.concretePatternTextObject = concretePatternText;
+  },
+  setConcretizedParameter: (state, parameterName) => {
+    state.concretePatternTextObject = {
+      ...state.concretePatternTextObject,
+      Fragments: state.concretePatternTextObject.Fragments.map((fragment) => {
+        if (fragment.Name === parameterName) {
+          return {
+            ...fragment,
+            concretized: true,
+          };
+        }
+
+        return fragment;
+      }),
+    };
   },
   updateFragmentValue: (state, fragmentPayload) => {
     state.activeParameter.Value = fragmentPayload.value;
@@ -38,7 +76,6 @@ const concretePatternsMutations = {
 
           return fragment;
         }
-
         return fragment;
       }),
     };
@@ -63,6 +100,9 @@ const concretePatternsMutations = {
         return fragment;
       }),
     };
+  },
+  registerPatternDescription: (state, userPatternDescription) => {
+    state.userPatternDescription = userPatternDescription;
   },
 };
 

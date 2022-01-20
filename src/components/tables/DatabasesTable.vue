@@ -1,22 +1,22 @@
 <template>
-  
   <div
-    v-if="databases.length > 0 && registerDatabaseComponent === false"
-    class="card"
+    v-if="
+      databases && databases.length > 0 && registerDatabaseComponent === false
+    "
   >
-  <div class="top">
-  <h5 class="tableTitle">Databases</h5>
-  <el-button class="buttonRegisterComponent" @click="openRegisterComponent"
-      >Register a new Database</el-button
-    >
+    <div class="top">
+      <h5 class="tableTitle">Databases</h5>
+      <el-button class="buttonRegisterComponent" @click="openRegisterComponent"
+        >Register a new Database</el-button
+      >
     </div>
     <el-table
-      v-if="databases.length > 0"
-      :data="databases"
+      class="card"
+      v-if="databases && databases.length > 0"
+      :data="databases && databases.length > 0 ? databases : []"
       highlight-current-row
       @current-change="handleCurrentChange"
       align="center"
-     
       height="15rem"
       size="medium"
     >
@@ -26,12 +26,15 @@
         prop="LocalName"
         class="localname"
       >
-      </el-table-column >
-      <el-table-column  label="Host" prop="Host"></el-table-column>
-      <el-table-column  label="Port" prop="Port"></el-table-column>
-      <el-table-column  label="Name" prop="Name"></el-table-column>
-      <el-table-column  align="right">
+      </el-table-column>
+      <el-table-column label="Host" prop="Host"></el-table-column>
+      <el-table-column label="Port" prop="Port"></el-table-column>
+      <el-table-column label="Name" prop="Name"></el-table-column>
+      <el-table-column align="right">
         <template #default="scope">
+          <el-button size="mini" plain @click="showFinalizedPatterns(scope.row)"
+            >Choose Patterns</el-button
+          >
           <el-button
             size="mini"
             type="danger"
@@ -50,17 +53,23 @@
       </el-table-column>
       <el-button></el-button>
     </el-table>
-    <small class="selecteddb" v-if="this.selectedDatabase.length > 0">You have selected following Database : {{this.selectedDatabase}}</small>
+    <div v-if="selectedDatabase.length > 0">
+      <h5 class="selecteddb" v-if="finalizedPatternsOfDatabase.length > 0">
+        Finalized Patterns of : {{ selectedDatabase }}
+      </h5>
+      <FinalizedPatternsTable></FinalizedPatternsTable>
+    </div>
+    <!-- <p v-if="finalizedPatternsOfDatabase && finalizedPatternsOfDatabase.length == 0 && this.selectedDatabase.length > 0 ">No Finalized Patterns available for : {{this.selectedDatabase}}</p> -->
   </div>
-  
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
 import RegisterDatabaseForm from "../forms/RegisterDatabaseForm.vue";
+import FinalizedPatternsTable from "./FinalizedPatternsTable.vue";
 
 export default {
-  components: { RegisterDatabaseForm },
+  components: { RegisterDatabaseForm, FinalizedPatternsTable },
   data() {
     return {
       selectedDatabase: "",
@@ -85,6 +94,9 @@ export default {
     registerDatabaseComponent: (state) => {
       return state.registerDatabaseComponent;
     },
+    finalizedPatternsOfDatabase: (state) => {
+      return state.finalizedPatternsOfDatabase;
+    },
   }),
   methods: {
     ...mapActions([
@@ -94,6 +106,7 @@ export default {
       "onDeleteDatabase",
       "onShowregisterDatabasecomponentOrNot",
       "onSetDatabaseOfPattern",
+      "callFinalizedPatternsOfDatabase",
     ]),
 
     selectDatabase: function(value) {
@@ -144,13 +157,15 @@ export default {
       this.callDatabases();
     },
     openRegisterComponent() {
-      this.onShowregisterDatabasecomponentOrNot(true);
-
+      this.$router.push(`/databases/registerDatabase`);
+    },
+    showFinalizedPatterns(row) {
+      this.callFinalizedPatternsOfDatabase(row.LocalName);
     },
   },
-  created(){
-    this.callDatabases()
-  }
+  created() {
+    this.callDatabases();
+  },
 };
 </script>
 
@@ -170,7 +185,7 @@ export default {
   cursor: pointer;
   margin-left: 5%;
   margin-right: 5%;
-   width:90%
+  width: 90%;
 }
 .card {
   margin-top: 2%;
@@ -186,12 +201,17 @@ export default {
   display: inline-flex;
   margin-bottom: 1rem;
 }
-.top{
+.top {
   display: flex;
   margin-top: 2%;
 }
-.buttonRegisterComponent{
+.buttonRegisterComponent {
   margin-right: 5%;
   margin-left: 60%;
+}
+.selecteddb {
+  margin-top: 2%;
+  text-align: left;
+  margin-left: 5.5%;
 }
 </style>

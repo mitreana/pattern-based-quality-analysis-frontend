@@ -64,8 +64,10 @@ const concretePatternSentenceMutations = {
   },
 
   registerActiveParameter: (state, payload) => {
-       console.log(payload);
     state.activeParameter = payload;
+  },
+  registerParameterExplanations: (state, payload) => {
+    state.parameterExplanations = [...payload];
   },
 };
 
