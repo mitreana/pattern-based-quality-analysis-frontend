@@ -134,14 +134,23 @@ export default {
       });
     },
     updateDescription() {
-      const params = this.$route.params;
+      if (this.timeoutFn) {
+        clearTimeout(this.timeoutFn);
+      }
       this.selectedDescription = this.sentenceDetails.PatternDescription;
       console.log("----------" + this.selectedDescription);
-      this.onSetPatternDescription({
+      
+      this.timeoutFn = setTimeout(() => {
+       this.setPatternDescription()
+      }, 2000);
+     
+    },
+    async setPatternDescription(){
+      const params = this.$route.params;
+      await this.onSetPatternDescription({
         concretePatternName: params.concretePatternName,
         description: this.selectedDescription,
-      });
-    },
+    })}
   },
   created() {
     if (!this.parameterExplanations) {

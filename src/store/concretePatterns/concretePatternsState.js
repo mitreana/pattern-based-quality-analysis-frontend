@@ -4,7 +4,8 @@ const concretePatternInitialState = {
   concretePatterns: [],
   concretePatternNameTableChoice: "",
   concretePatternTextObject: {},
-  userPatternDescription:"",
+  userPatternDescription: "",
+  concretePatternParameterPosting: false,
 };
 
 export default concretePatternInitialState;

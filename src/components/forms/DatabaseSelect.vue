@@ -7,7 +7,7 @@
       <el-select
         v-model="selectedDatabase"
         placeholder="Select a Database"
-        @change="selectDatabase"
+        
         :no-data-text="
           databases.length == 0
             ? 'No database. Please register a database first. '
@@ -65,6 +65,16 @@ export default {
     },
   }),
   props: ["defaultDatabase"],
+  watch:{
+    selectedDatabase: function(value) {  
+     console.log("value")
+      this.onUserDatabaseChoice(value);
+      this.setDatabaseOfPattern();
+      console.log("notification",this.selectedDatabase)
+      this.toggleEmptyErrorMessage(false);
+      
+    }
+  },
   methods: {
     ...mapActions([
       "callDatabases",
@@ -74,13 +84,16 @@ export default {
       "onShowregisterDatabasecomponentOrNot",
       "onSetDatabaseOfPattern",
       "toggleEmptyErrorMessage",
-      "callDatabaseOfPattern",
+       "callDatabaseOfPattern",
     ]),
 
-    selectDatabase: function(value) {
+    selectDaabase: function() {  
+     console.log("value")
       this.onUserDatabaseChoice(value);
       this.setDatabaseOfPattern();
+      console.log("notification",this.selectedDatabase)
       this.toggleEmptyErrorMessage(false);
+      
     },
     openNotification(title, message, type) {
       this.$notify({
@@ -110,11 +123,11 @@ export default {
       this.onShowregisterDatabasecomponentOrNot(true);
     },
   },
-  created() {
-    this.callDatabases();
-  },
   updated() {
     this.selectedDatabase = this.defaultDatabase.LocalName;
+  },
+  created(){
+     // this.selectedDatabase = this.defaultDatabase.LocalName;
   },
 };
 </script>

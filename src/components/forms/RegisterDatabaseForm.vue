@@ -1,8 +1,6 @@
 <template>
-  <div class="database card" >
-    <div
-      class="form"
-    >
+  <div class="database card">
+    <div class="form">
       <p>REGISTER DATABASE</p>
 
       <el-form
@@ -85,7 +83,11 @@
         ></el-form-item>
 
         <el-form-item>
-          <el-button @click="openDatabasesTable" v-if="this.databases.length > 0">Go back</el-button>
+          <el-button
+            @click="openDatabasesTable"
+            v-if="this.databases.length > 0"
+            >Go back</el-button
+          >
           <el-button type="primary" @click="submitForm('data')"
             >Submit</el-button
           >
@@ -211,7 +213,7 @@ export default {
               "Database successfully registered!",
               "success"
             );
-             this.$router.back()
+            this.$router.back();
           }
           if (this.errorMessage.length > 0) {
             this.openNotification(
@@ -228,15 +230,9 @@ export default {
       this.$refs[formName].resetFields();
     },
     openDatabasesTable() {
-        this.$router.back()
+      this.$router.back();
     },
   },
-  created() {
-    this.callDatabases();
-  },
-//   unmounted() {
-//     this.onShowregisterDatabasecomponentOrNot(false);
-//   },
 };
 </script>
 

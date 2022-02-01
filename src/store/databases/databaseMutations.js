@@ -1,6 +1,12 @@
 const databaseMutations = {
   registerDatabases: (state, databases) => {
-    state.databases = [...databases];
+    console.log("Databases are", databases);
+    state.databases = [
+       ...databases.filter(
+         (database, index, array) =>
+          array.findIndex((a) => a.Name === database.Name) === index
+       ),
+    ];
   },
   changeUserDatabase: (state, userChoice) => {
     console.log("User choice is", userChoice);

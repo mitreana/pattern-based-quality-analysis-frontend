@@ -19,13 +19,14 @@
         Object.keys(concretePatternTextObject).length > 0
     "
   >
+
     <h3 ref="title" class="card-title">
       Edit concrete pattern "{{ concretePatternTextObject.PatternName }}"
     </h3>
     <div class=" edit card">
       <div class="card-body">
         <el-form label-position="left">
-          <div class="database">
+           <div class="database">
             <el-form-item class="labels" label="Database" required>
               <DatabaseSelect
                 :defaultDatabase="userDatabaseDefault"
@@ -59,6 +60,7 @@
               :fragments="concretePatternTextObject.Fragments"
               :sentenceDetails="concretePatternTextObject"
           /></el-form-item>
+         
 
           <!-- <div id="name">
           <el-collapse class="concrete-pattern-info">
@@ -137,6 +139,8 @@ export default {
       "toggleEmptyErrorMessage",
       "onSetPatternDescription",
       "callDatabaseOfPattern",
+      "selectActiveParameter",
+      "callDatabases",
     ]),
     updateDescription() {
       const params = this.$route.params;
@@ -151,21 +155,22 @@ export default {
       this.$router.push(`/databases/registerDatabase`);
     },
   },
-  created() {
+  async created() {
+    await this.callDatabases();
     const params = this.$route.params;
     if (
       params &&
       params.concretePatternName &&
       params.concretePatternName.length > 0
     ) {
-      console.log("Database is being called");
-      this.callConcretePatternText(params.concretePatternName);
-      this.callDatabaseOfPattern(params.concretePatternName);
+      await this.callConcretePatternText(params.concretePatternName);
+      await this.callDatabaseOfPattern(params.concretePatternName);
     }
     this.selectedDescription = this.concretePatternTextObject.PatternDescription;
   },
   unmounted() {
     this.toggleEmptyErrorMessage(false);
+    this.selectActiveParameter(null);
   },
 };
 </script>

@@ -3,6 +3,15 @@
     <el-button class="goBack" @click="goBack">Go back</el-button>
     <h5>Results</h5>
   </div>
+  <el-alert
+    title="Coppied!"
+    width="50"
+    type="success"
+    center
+    show-icon
+    v-if="copied"
+  >
+  </el-alert>
   <div
     id="toCopy"
     class="card"
@@ -17,13 +26,14 @@
         @click="copy"
         type="primary"
         plain
-        >Copy Result</el-button
+        >Copy to Clipboard</el-button
       >
+
       <p class="p">Result for Finalized Pattern " {{ item.Pattern }} " :</p>
-      <p class="p">{{item.Description}}</p>
+      <p class="p">{{ item.Description }}</p>
       <!-- <p class="p">Result :</p> -->
       <p class="p" id="result" v-if="item.Results.length > 0">
-        {{ item.Results }}
+        {{ breakText(item.Results) }}
       </p>
       <p class="pErrors" v-if="item.Results.length == 0">No Results found</p>
     </el-scrollbar>
@@ -33,6 +43,11 @@
 <script>
 import { mapActions, mapState } from "vuex";
 export default {
+  data() {
+    return {
+      copied: false,
+    };
+  },
   computed: mapState({
     applyPatternsResponse: (state) => {
       return state.applyPatternsResponse;
@@ -46,16 +61,23 @@ export default {
       this.onResetApplyPatternsResponse();
     },
     copy() {
-       var text = document.getElementById("toCopy").innerText;
-       console.log(text)
-       navigator.clipboard.writeText(text)
-    .then(() => {
-        console.log('Text copied to clipboard');
-    })
-    .catch(err => {
-        console.error('Error in copying text: ', err);
-    });
+      var text = document.getElementById("toCopy").innerText;
+      console.log(text);
+      navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          console.log("Text copied to clipboard");
+          this.copied = true;
+        })
+        .catch((err) => {
+          console.error("Error in copying text: ", err);
+          this.copied = false;
+        });
+      this.copied = false;
     },
+    breakText(text){
+      return text.toString().replace("\r\n","<br>");
+    }
   },
 };
 </script>
@@ -89,8 +111,20 @@ export default {
   margin-bottom: 0%;
   margin-top: 1%;
   margin-left: 85%;
+  position: sticky;
+  right: 40px;
+  top: 0;
 }
 .header {
   display: flexbox;
+}
+#result {
+  white-space: pre-line;
+}
+#toCopy {
+  position: relative;
+}
+#el-alert {
+  margin-bottom: 2%;
 }
 </style>

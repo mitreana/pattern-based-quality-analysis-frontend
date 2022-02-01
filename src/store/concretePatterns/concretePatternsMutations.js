@@ -104,6 +104,12 @@ const concretePatternsMutations = {
   registerPatternDescription: (state, userPatternDescription) => {
     state.userPatternDescription = userPatternDescription;
   },
+  parameterStartPosting: (state) => {
+    state.concretePatternParameterPosting = true;
+  },
+  parameterStopPosting: (state) => {
+    state.concretePatternParameterPosting = false;
+  },
 };
 
 export default concretePatternsMutations;

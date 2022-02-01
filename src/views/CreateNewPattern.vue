@@ -93,7 +93,8 @@ export default {
       if (this.successMessage.length > 0) {
         this.$router.push("/concretePatterns");
       }
-    },
+    },created(){
+    }
   },
 };
 </script>

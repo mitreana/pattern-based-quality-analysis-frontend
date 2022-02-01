@@ -1,5 +1,5 @@
 const databaseInitialState = {
-  databases: [],
+  databases: null,
   userDatabase: "",
   userDatabaseDefault: "",
   databaseRegistrationInfo: {

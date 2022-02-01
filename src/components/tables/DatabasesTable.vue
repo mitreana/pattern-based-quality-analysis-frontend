@@ -163,9 +163,6 @@ export default {
       this.callFinalizedPatternsOfDatabase(row.LocalName);
     },
   },
-  created() {
-    this.callDatabases();
-  },
 };
 </script>
 

@@ -9,6 +9,7 @@
       Select Finalized Patterns in order to test the selected Database
     </p>
     <el-table
+    v-loading="loading"
       v-if="
         finalizedPatternsOfDatabase && finalizedPatternsOfDatabase.length > 0
       "
@@ -17,6 +18,7 @@
       :data="finalizedPatternsOfDatabase"
       @selection-change="handleSelectionChange"
       height="20rem"
+      
     >
       <el-table-column type="selection" />
       <el-table-column label="Name" width="200%">
@@ -45,10 +47,12 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-
+import { ref } from 'vue'
 export default {
+ 
   data() {
     return {
+      loading : ref(false),
       multipleSelection: [],
     };
   },

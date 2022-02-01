@@ -25,7 +25,7 @@
                 : 'Click to edit'
             }`
           "
-          @click="() => selectActiveParameter(fragment)"
+          @click="() => selectParameter(fragment)"
           :type="
             `${
               fragment &&
@@ -87,6 +87,7 @@
         </el-tag>
       </span>
     </p>
+    <p v-if="concretePatternParameterPosting">Parameter is being updated...</p>
   </div>
 </template>
 
@@ -102,9 +103,18 @@ export default {
     parameterExplanations: (state) => {
       return state.parameterExplanations;
     },
+    concretePatternParameterPosting: (state) => {
+      return state.concretePatternParameterPosting;
+    },
   }),
   methods: {
     ...mapActions(["selectActiveParameter"]),
+    selectParameter(fragment) {
+      console.log(this.concretePatternParameterPosting);
+      if (!this.concretePatternParameterPosting) {
+        this.selectActiveParameter(fragment);
+      }
+    },
   },
   created() {
     console.log(this.fragments);

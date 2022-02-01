@@ -98,7 +98,14 @@ const concretePatternsActions = {
       value: fragmentValue,
     });
   },
-
+  onParameterStartPosting: (context) => {
+    console.log("Start posting entered");
+    context.commit("parameterStartPosting");
+  },
+  onParameterStopPosting: (context) => {
+    console.log("Stop posting entered");
+    context.commit("parameterStopPosting");
+  },
   onFragmentTypeChange: (context, { fragmentName, fragmentType }) => {
     context.commit("updateFragmentType", {
       name: fragmentName,

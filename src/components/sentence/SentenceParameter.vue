@@ -182,33 +182,44 @@ export default {
       "onFragmentValueChange",
       "onFragmentTypeChange",
       "concretizeParameter",
+      "onParameterStartPosting",
+      "onParameterStopPosting",
     ]),
     onValueChange: function(value) {
       if (this.timeoutFn) {
         clearTimeout(this.timeoutFn);
       }
-      this.timeoutFn = setTimeout(() => {
+      this.onParameterStartPosting();
+
+      this.timeoutFn = setTimeout(async () => {
+        
         this.onFragmentValueChange({
           fragmentName: this.activeParameter.Name,
           fragmentValue: value,
         });
-        this.activeParameter.Value = value;
         this.onConcretiseParameter();
-      }, 500);
+        
+        this.activeParameter.Value = value;
+        this.onParameterStopPosting();
+      }, 1000);
     },
     onBooleanChange: function(value) {
       if (this.timeoutFn) {
         clearTimeout(this.timeoutFn);
       }
 
+      this.onParameterStartPosting();
+
       this.timeoutFn = setTimeout(() => {
+        
         this.onFragmentValueChange({
           fragmentName: this.activeParameter.Name,
           fragmentValue: String(value),
         });
         this.activeParameter.Value = Boolean(value);
         this.onConcretiseParameter();
-      }, 500);
+        this.onParameterStopPosting();
+      }, 800);
     },
     onTypeChange: function(type) {
       if (type === "Boolean") {
@@ -225,33 +236,24 @@ export default {
       this.onConcretiseParameter();
     },
     async onConcretiseParameter() {
-      console.log("On concretise parameter entered");
       this.added = true;
-      const concretiseParameterPayload = await Promise.all(
-        this.activeParameter.URLs.map((url) =>
-          ConcretePatternService.postConcretiseParameter(
-            url,
-            this.activeParameter.Value
-              ? this.activeParameter.Value
-              : this.activeParameter.Value,
-            this.activeParameter.Type === "Untyped"
-              ? "Text"
-              : this.activeParameter.Type
-          )
-        )
-      );
 
+      let concretiseParameterPayload;
+
+      for await (const activeParameterUrl of this.activeParameter.URLs) {
+        concretiseParameterPayload = await ConcretePatternService.postConcretiseParameter(
+          activeParameterUrl,
+          this.activeParameter.Value
+            ? this.activeParameter.Value
+            : this.activeParameter.Value,
+          this.activeParameter.Type === "Untyped"
+            ? "Text"
+            : this.activeParameter.Type
+        );
+      }
       if (concretiseParameterPayload) {
         this.concretizeParameter(this.activeParameter.Name);
       }
-
-      // if (this.concretised) {
-      //   this.openNotification(
-      //     "Success message",
-      //     "New Paremeter value was successfully added!",
-      //     "success"
-      //   );
-      // }
     },
     openNotification(title, message, type) {
       this.$notify({

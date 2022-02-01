@@ -5,11 +5,17 @@ const databaseActions = {
     const databasesPayload = await DatabaseService.getDatabases();
 
     if (databasesPayload.success) {
+      console.log(databasesPayload.data)
+      if(databasesPayload.data.length == 0){
+      const parsedDatabasesPayload1 = JSON.parse(JSON.stringify(databasesPayload.data));
+     context.commit("registerDatabases", parsedDatabasesPayload1);}
+      context.commit("registerErrorMessage", "");
+      if(databasesPayload.data.length > 0){
       databasesPayload.data = databasesPayload.data.replaceAll(", }", "}");
       const parsedDatabasesPayload = JSON.parse(databasesPayload.data);
-      context.commit("registerErrorMessage", "");
-      context.commit("registerDatabases", parsedDatabasesPayload);
+      context.commit("registerDatabases", parsedDatabasesPayload);}
     } else {
+      context.commit("registerDatabases", []);
       context.commit("registerErrorMessage", databasesPayload.data.message);
     }
   },
@@ -77,10 +83,7 @@ const databaseActions = {
 
     if (databaseOfPatternPayload.success) {
       context.commit("registerErrorMessage", "");
-      context.commit(
-        "changeDatabaseOfPattern",
-        databaseOfPatternPayload.data
-      );
+      context.commit("changeDatabaseOfPattern", databaseOfPatternPayload.data);
     } else {
       context.commit("registerErrorMessage", databaseOfPatternPayload.message);
     }
