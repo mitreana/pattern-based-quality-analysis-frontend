@@ -38,7 +38,6 @@ const concretePatternsActions = {
   },
   callConcretePatterns: async (context) => {
     const concretePatternPayload = await ConcretePatternService.getConcretePatterns();
-    console.log(concretePatternPayload);
     if (concretePatternPayload.success) {
       // concretePatternPayload.data = concretePatternPayload.data.replaceAll(
       //   ", }",
@@ -99,11 +98,9 @@ const concretePatternsActions = {
     });
   },
   onParameterStartPosting: (context) => {
-    console.log("Start posting entered");
     context.commit("parameterStartPosting");
   },
   onParameterStopPosting: (context) => {
-    console.log("Stop posting entered");
     context.commit("parameterStopPosting");
   },
   onFragmentTypeChange: (context, { fragmentName, fragmentType }) => {
@@ -116,7 +113,6 @@ const concretePatternsActions = {
     const validatePayload = await ConcretePatternService.postValidatePatternAgainstSchema(
       patternName
     );
-    console.log("validatePayload" + validatePayload.data);
 
     if (validatePayload.success) {
       context.commit("registerErrorMessage", "");
@@ -130,7 +126,6 @@ const concretePatternsActions = {
     const patternDescriptionPayload = await ConcretePatternService.postPatternDescription(
       body
     );
-    console.log(patternDescriptionPayload.data);
     if (patternDescriptionPayload.success) {
       context.commit(
         "registerPatternDescription",

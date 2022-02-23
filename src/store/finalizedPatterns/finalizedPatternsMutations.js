@@ -11,9 +11,8 @@ const finalizedPatternsMutations = {
   registerApplyPatternsErrorMessage: (state, applyPatternsErrorMessage) => {
     state.applyPatternsErrorMessage = applyPatternsErrorMessage;
   },
-  resetApplyPatternsResponse:(state) =>{
-    state.applyPatternsResponse= ""
-    console.log("here response",state.applyPatternsResponse)
+  resetApplyPatternsResponse: (state) => {
+    state.applyPatternsResponse = "";
   },
 };
 

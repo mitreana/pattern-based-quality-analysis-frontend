@@ -5,15 +5,18 @@ const databaseActions = {
     const databasesPayload = await DatabaseService.getDatabases();
 
     if (databasesPayload.success) {
-      console.log(databasesPayload.data)
-      if(databasesPayload.data.length == 0){
-      const parsedDatabasesPayload1 = JSON.parse(JSON.stringify(databasesPayload.data));
-     context.commit("registerDatabases", parsedDatabasesPayload1);}
+      if (databasesPayload.data.length == 0) {
+        const parsedDatabasesPayload1 = JSON.parse(
+          JSON.stringify(databasesPayload.data)
+        );
+        context.commit("registerDatabases", parsedDatabasesPayload1);
+      }
       context.commit("registerErrorMessage", "");
-      if(databasesPayload.data.length > 0){
-      databasesPayload.data = databasesPayload.data.replaceAll(", }", "}");
-      const parsedDatabasesPayload = JSON.parse(databasesPayload.data);
-      context.commit("registerDatabases", parsedDatabasesPayload);}
+      if (databasesPayload.data.length > 0) {
+        databasesPayload.data = databasesPayload.data.replaceAll(", }", "}");
+        const parsedDatabasesPayload = JSON.parse(databasesPayload.data);
+        context.commit("registerDatabases", parsedDatabasesPayload);
+      }
     } else {
       context.commit("registerDatabases", []);
       context.commit("registerErrorMessage", databasesPayload.data.message);
@@ -21,7 +24,7 @@ const databaseActions = {
   },
 
   onUserDatabaseChoice: (context, userChoice) => {
-    context.commit("changeUserDatabase", userChoice);
+    // context.commit("changeUserDatabase", userChoice);
   },
   onUserDatabaseRegistration: async (context, body) => {
     const registerDatabasePayload = await DatabaseService.postRegisterDatabase(
@@ -58,17 +61,27 @@ const databaseActions = {
     );
 
     if (postSetDatabaseOfPatternPayload.success) {
-      console.log(postSetDatabaseOfPatternPayload);
       context.commit("registerErrorMessage", "");
       context.commit(
         "registerSuccessMessage",
         postSetDatabaseOfPatternPayload.data
       );
+      context.commit("changeDatabaseOfPattern", {
+        database: {
+          LocalName: userChoice.localName,
+        },
+        patternName: userChoice.patternName,
+      });
     } else {
+      context.commit("registerEmptyErrorMessage", true);
       context.commit(
         "registerErrorMessage",
         postSetDatabaseOfPatternPayload.data.message
       );
+      context.commit("changeDatabaseOfPattern", {
+        database: null,
+        patternName: userChoice.patternName,
+      });
     }
   },
 
@@ -83,8 +96,15 @@ const databaseActions = {
 
     if (databaseOfPatternPayload.success) {
       context.commit("registerErrorMessage", "");
-      context.commit("changeDatabaseOfPattern", databaseOfPatternPayload.data);
+      context.commit("changeDatabaseOfPattern", {
+        database: databaseOfPatternPayload.data,
+        patternName: userChoice,
+      });
     } else {
+      context.commit("changeDatabaseOfPattern", {
+        database: null,
+        patternName: userChoice,
+      });
       context.commit("registerErrorMessage", databaseOfPatternPayload.message);
     }
   },

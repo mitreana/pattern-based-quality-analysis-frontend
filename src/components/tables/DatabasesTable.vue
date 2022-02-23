@@ -12,8 +12,10 @@
     </div>
     <el-table
       class="card"
-      v-if="databases && databases.length > 0"
-      :data="databases && databases.length > 0 ? databases : []"
+      v-if="databases && databases.length && databases.length > 0"
+      :data="
+        databases && databases.length && databases.length > 0 ? databases : []
+      "
       highlight-current-row
       @current-change="handleCurrentChange"
       align="center"
@@ -53,8 +55,13 @@
       </el-table-column>
       <el-button></el-button>
     </el-table>
-    <div v-if="selectedDatabase.length > 0">
-      <h5 class="selecteddb" v-if="finalizedPatternsOfDatabase.length > 0">
+    <div v-if="selectedDatabase && selectedDatabase.length > 0">
+      <h5
+        class="selecteddb"
+        v-if="
+          finalizedPatternsOfDatabase && finalizedPatternsOfDatabase.length > 0
+        "
+      >
         Finalized Patterns of : {{ selectedDatabase }}
       </h5>
       <FinalizedPatternsTable></FinalizedPatternsTable>

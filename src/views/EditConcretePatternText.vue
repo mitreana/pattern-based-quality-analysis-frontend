@@ -1,35 +1,27 @@
 <template>
-  <!-- <div
-    :style="{
-      margin: 'auto',
-    }"
-    v-if="
-      concretePatternTextObject &&
-        Object.keys(concretePatternTextObject).length > 0
-    "
-  >
-    <RegisterDatabaseForm
-      v-if="registerDatabaseComponent === true"
-    ></RegisterDatabaseForm>
-    <DatabasesTable></DatabasesTable>
-  </div> -->
+  <el-button
+    :style="{ display: 'none' }"
+    v-loading.fullscreen.lock="loading"
+  ></el-button>
   <div
     v-if="
       concretePatternTextObject &&
-        Object.keys(concretePatternTextObject).length > 0
+        Object.keys(concretePatternTextObject).length > 0 &&
+        !loading
     "
   >
-
     <h3 ref="title" class="card-title">
       Edit concrete pattern "{{ concretePatternTextObject.PatternName }}"
     </h3>
     <div class=" edit card">
       <div class="card-body">
         <el-form label-position="left">
-           <div class="database">
+          <div class="database">
             <el-form-item class="labels" label="Database" required>
               <DatabaseSelect
-                :defaultDatabase="userDatabaseDefault"
+                :defaultDatabase="
+                  userDatabase[concretePatternTextObject.PatternName]
+                "
               ></DatabaseSelect>
             </el-form-item>
             <el-form-item>
@@ -60,7 +52,6 @@
               :fragments="concretePatternTextObject.Fragments"
               :sentenceDetails="concretePatternTextObject"
           /></el-form-item>
-         
 
           <!-- <div id="name">
           <el-collapse class="concrete-pattern-info">
@@ -104,11 +95,13 @@ import ConcretePatternSentenceContainer from "../components/containers/ConcreteP
 import RegisterDatabaseForm from "../components/forms/RegisterDatabaseForm.vue";
 import DatabasesTable from "../components/tables/DatabasesTable.vue";
 import DatabaseSelect from "../components/forms/DatabaseSelect.vue";
+import { ref } from "vue";
 export default {
   data() {
     return {
       selectedDatabase: "",
       selectedDescription: "",
+      loading: false,
     };
   },
   components: {
@@ -129,8 +122,8 @@ export default {
     userPatternDescription: (state) => {
       return state.userPatternDescription;
     },
-    userDatabaseDefault: (state) => {
-      return state.userDatabaseDefault;
+    userDatabase: (state) => {
+      return state.userDatabase;
     },
   }),
   methods: {
@@ -145,7 +138,6 @@ export default {
     updateDescription() {
       const params = this.$route.params;
       this.selectedDescription = this.concretePatternTextObject.PatternDescription;
-      console.log("----------" + this.selectedDescription);
       this.onSetPatternDescription({
         concretePatternName: params.concretePatternName,
         description: this.selectedDescription,
@@ -156,6 +148,7 @@ export default {
     },
   },
   async created() {
+    this.loading = true;
     await this.callDatabases();
     const params = this.$route.params;
     if (
@@ -166,6 +159,7 @@ export default {
       await this.callConcretePatternText(params.concretePatternName);
       await this.callDatabaseOfPattern(params.concretePatternName);
     }
+    this.loading = false;
     this.selectedDescription = this.concretePatternTextObject.PatternDescription;
   },
   unmounted() {

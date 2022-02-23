@@ -1,7 +1,8 @@
 <template>
-  
   <div class="abstract-pattern-step-container">
-    <p class="description">Click on any abstract pattern in order to select it and view his texts.</p>
+    <p class="description">
+      Click on any abstract pattern in order to select it and view his texts.
+    </p>
     <el-scrollbar height="400px">
       <div
         class="card abstract-pattern-card"
@@ -24,28 +25,32 @@
           </small>
           <!-- <p>{{abstractPattern.ExampleText.Fragments}}</p> -->
         </div>
-         <div class="card-body">
-        <ReadonlySentence :fragments="abstractPattern.ExampleText.Fragments" />
-      </div>
+        <div class="card-body">
+          <ReadonlySentence
+            :fragments="abstractPattern.ExampleText.Fragments"
+          />
+        </div>
       </div>
     </el-scrollbar>
-    <div
-      v-if="!userAbstractPattern && nextStepClicked"
-    >
-     <el-alert class="alert" title="Please select an abstract pattern" type="error" show-icon> </el-alert>
+    <div v-if="!userAbstractPattern && nextStepClicked">
+      <el-alert
+        class="alert"
+        title="Please select an abstract pattern"
+        type="error"
+        show-icon
+      >
+      </el-alert>
     </div>
-   
-
   </div>
 </template>
 
 <script>
-import ReadonlySentence from "../sentence/ReadonlySentence.vue"
+import ReadonlySentence from "../sentence/ReadonlySentence.vue";
 import { mapActions, mapState } from "vuex";
 
 export default {
   props: ["nextStepClicked"],
-  components: {ReadonlySentence},
+  components: { ReadonlySentence },
   data() {
     return {
       selectedAbstractPattern: "",
@@ -69,10 +74,6 @@ export default {
   created() {
     this.callAbstractPatterns();
   },
-  updated(){
-    console.log(this.abstractPatterns)
-  }
- 
 };
 </script>
 
@@ -98,11 +99,11 @@ export default {
 .abstract-pattern-card p {
   opacity: 0.6;
 }
-.alert{
-    width:80%;
-    margin: auto;
+.alert {
+  width: 80%;
+  margin: auto;
 }
-.description{
+.description {
   opacity: 0.5;
 }
 </style>

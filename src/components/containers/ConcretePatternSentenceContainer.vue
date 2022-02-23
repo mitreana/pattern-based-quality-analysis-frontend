@@ -35,8 +35,15 @@
       </el-collapse>
     </div>
     <div>
-      <el-button class="finalizeButton" type="primary" plain @click="finalize"
-        >Finalize Concretisation</el-button
+      <el-button
+        class="finalizeButton"
+        type="primary"
+        plain
+        @click="finalize"
+        :loading="loading"
+        >{{
+          loading ? "Finalizing Concretisation" : "Finalize Concretisation"
+        }}</el-button
       >
     </div>
   </div>
@@ -50,6 +57,11 @@ import { mapActions, mapState } from "vuex";
 export default {
   props: ["fragments", "sentenceDetails"],
   components: { SentenceParameter, SentenceText },
+  data: () => {
+    return {
+      loading: false,
+    };
+  },
   computed: {
     ...mapState({
       activeParameter: (state) => {
@@ -67,6 +79,9 @@ export default {
       concretePatternParameters: (state) => {
         return state.concretePatternParameters;
       },
+      userDatabase: (state) => {
+        return state.userDatabase;
+      },
     }),
   },
   methods: {
@@ -80,8 +95,8 @@ export default {
       "onSetPatternDescription",
     ]),
     async finalize() {
-      const userDatabase = this.$store._state.data.userDatabase;
-      if (userDatabase && userDatabase.length > 0) {
+      this.loading = true;
+      if (this.userDatabase[this.sentenceDetails.PatternName]) {
         this.toggleEmptyErrorMessage(false);
         const params = this.$route.params;
         await this.onValidatePatternAgainstSchema(params.concretePatternName);
@@ -102,18 +117,13 @@ export default {
           }
         }
         if (this.errorMessage.length > 0) {
-          if (
-            this.errorMessage.includes("500")
-            
-          ) {
-            console.log("okkk")
+          if (this.errorMessage.includes("500")) {
             this.openNotification(
               "Error Message",
               `Please enter reasonable values for each input!`,
               "error"
             );
-          }
-          else {
+          } else {
             this.openNotification(
               "Error Message",
               `Please enter reasonable values for each input!`,
@@ -124,6 +134,7 @@ export default {
       } else {
         this.toggleEmptyErrorMessage(true);
       }
+      this.loading = false;
     },
     openNotification(title, message, type) {
       this.$notify({
@@ -138,19 +149,17 @@ export default {
         clearTimeout(this.timeoutFn);
       }
       this.selectedDescription = this.sentenceDetails.PatternDescription;
-      console.log("----------" + this.selectedDescription);
-      
-      this.timeoutFn = setTimeout(() => {
-       this.setPatternDescription()
-      }, 2000);
-     
+      this.timeoutFn = setTimeout(async () => {
+        await this.setPatternDescription();
+      }, 1000);
     },
-    async setPatternDescription(){
+    async setPatternDescription() {
       const params = this.$route.params;
       await this.onSetPatternDescription({
         concretePatternName: params.concretePatternName,
         description: this.selectedDescription,
-    })}
+      });
+    },
   },
   created() {
     if (!this.parameterExplanations) {

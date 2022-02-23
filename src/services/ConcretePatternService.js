@@ -1,3 +1,4 @@
+import api from "./axios";
 import axios from "axios";
 
 class ConcretePatternService {
@@ -9,7 +10,7 @@ class ConcretePatternService {
 
   async getConcretePatterns() {
     try {
-      const payload = await axios.get(this.baseUrl + "/concrete-patterns");
+      const payload = await api.get(this.baseUrl + "/concrete-patterns");
       return {
         success: true,
         data: payload.data,
@@ -24,7 +25,7 @@ class ConcretePatternService {
 
   async getConcretePatternText(concretePatternName) {
     try {
-      const payload = await axios.get(
+      const payload = await api.get(
         this.baseUrl + `/concrete-patterns` + `/text/${concretePatternName}`
       );
       return {
@@ -41,7 +42,7 @@ class ConcretePatternService {
 
   async postConcretiseParameter(URL, parameterValue, parameterType) {
     try {
-      const payload = await axios.post(
+      const payload = await api.post(
         this.baseUrl +
           `${URL}?value=${parameterValue}${
             parameterType ? "&type=" + parameterType : ""
@@ -65,7 +66,7 @@ class ConcretePatternService {
 
   async postDelete(concretePatternName) {
     try {
-      const payload = await axios.delete(
+      const payload = await api.delete(
         this.baseUrl +
           `/concrete-patterns` +
           `/deletion/${concretePatternName}`,
@@ -109,7 +110,7 @@ class ConcretePatternService {
 
   async getParameterExplanations() {
     try {
-      const payload = await axios.get(this.baseUrl + `/parameter-explanations`);
+      const payload = await api.get(this.baseUrl + `/parameter-explanations`);
       return {
         success: true,
         data: payload.data,
@@ -143,7 +144,7 @@ class ConcretePatternService {
   //http://localhost:8080/qualitypatternmodel/concrete-patterns/description/1?description=somethingnew
   async postPatternDescription(body) {
     try {
-      const payload = await axios.post(
+      const payload = await api.post(
         this.baseUrl +
           `/concrete-patterns/description/${body.concretePatternName}?description=${body.description}`,
         { Headers: { Origin: "*" } }
@@ -162,10 +163,9 @@ class ConcretePatternService {
 
   async callConcretePatternParameterExplanations() {
     try {
-      const payload = await axios.get(
-        this.baseUrl + "/parameter-explanations",
-        { Headers: { Origin: "*" } }
-      );
+      const payload = await api.get(this.baseUrl + "/parameter-explanations", {
+        Headers: { Origin: "*" },
+      });
 
       return {
         success: true,

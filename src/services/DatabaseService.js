@@ -1,14 +1,13 @@
-import axios from "axios";
+import api from "./axios";
 
 class DatabaseService {
-
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
   }
 
   async getDatabases() {
     try {
-      const payload = await axios.get(this.baseUrl);
+      const payload = await api.get(this.baseUrl);
       return {
         success: true,
         data: payload.data,
@@ -24,7 +23,7 @@ class DatabaseService {
   //http://localhost:8080/qualitypatternmodel/databases/get/card_concrete_finalized
   async getDatabasesOfPattern(patternName) {
     try {
-      const payload = await axios.get(this.baseUrl + "/get/" + patternName);
+      const payload = await api.get(this.baseUrl + "/get/" + patternName);
       return {
         success: true,
         data: payload.data,
@@ -41,7 +40,7 @@ class DatabaseService {
 
   async postRegisterDatabase(body) {
     try {
-      const payload = await axios.post(
+      const payload = await api.post(
         this.baseUrl +
           `/registration/${body.localname}?host=${body.host}&port=${body.port}&name=${body.name}&password=${body.password}&user=${body.user}`,
         {
@@ -64,7 +63,7 @@ class DatabaseService {
 
   async postSetDatabaseOfPattern(body) {
     try {
-      const payload = await axios.post(
+      const payload = await api.post(
         this.baseUrl + `/set/${body.localName}/${body.patternName}`,
         {
           Headers: { Origin: "*" },
@@ -85,7 +84,7 @@ class DatabaseService {
   //http://localhost:8080/qualitypatternmodel/databases/deletion/{local-name}
   async deleteDatabase(localName) {
     try {
-      const payload = await axios.delete(
+      const payload = await api.delete(
         this.baseUrl + `/deletion/${localName}`,
         {
           Headers: { Origin: "*" },

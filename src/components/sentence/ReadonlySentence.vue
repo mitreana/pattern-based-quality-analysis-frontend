@@ -20,8 +20,5 @@
 <script>
 export default {
   props: ["fragments"],
-  created() {
-    console.log(this.fragments);
-  },
 };
 </script>

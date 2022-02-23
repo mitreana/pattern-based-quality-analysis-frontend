@@ -10,7 +10,7 @@
     <el-menu-item
       index="/createNewPattern"
       @click="navigateTo('/createNewPattern')"
-      >Create New pattern</el-menu-item
+      >Create new pattern</el-menu-item
     >
     <el-menu-item
       index="/concretePatterns"

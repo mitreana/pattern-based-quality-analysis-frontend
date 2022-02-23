@@ -192,13 +192,12 @@ export default {
       this.onParameterStartPosting();
 
       this.timeoutFn = setTimeout(async () => {
-        
         this.onFragmentValueChange({
           fragmentName: this.activeParameter.Name,
           fragmentValue: value,
         });
-        this.onConcretiseParameter();
-        
+        await this.onConcretiseParameter();
+
         this.activeParameter.Value = value;
         this.onParameterStopPosting();
       }, 1000);
@@ -211,7 +210,6 @@ export default {
       this.onParameterStartPosting();
 
       this.timeoutFn = setTimeout(() => {
-        
         this.onFragmentValueChange({
           fragmentName: this.activeParameter.Name,
           fragmentValue: String(value),
@@ -219,21 +217,27 @@ export default {
         this.activeParameter.Value = Boolean(value);
         this.onConcretiseParameter();
         this.onParameterStopPosting();
-      }, 800);
+      }, 500);
     },
-    onTypeChange: function(type) {
+    onTypeChange: async function(type) {
       if (type === "Boolean") {
-        this.onFragmentValueChange({
+        await this.onFragmentValueChange({
           fragmentName: this.activeParameter.Name,
           fragmentValue: "false",
         });
+        await this.onFragmentTypeChange({
+          fragmentName: this.activeParameter.Name,
+          fragmentType: type,
+        });
+        this.activeParameter.Type = type;
+        await this.onConcretiseParameter();
+      } else {
+        await this.onFragmentTypeChange({
+          fragmentName: this.activeParameter.Name,
+          fragmentType: type,
+        });
+        this.activeParameter.Type = type;
       }
-      this.onFragmentTypeChange({
-        fragmentName: this.activeParameter.Name,
-        fragmentType: type,
-      });
-      this.activeParameter.Type = type;
-      this.onConcretiseParameter();
     },
     async onConcretiseParameter() {
       this.added = true;
@@ -263,15 +267,6 @@ export default {
         position: "bottom-right",
       });
     },
-  },
-  created() {
-    console.log("This active parameter", this.activeParameter);
-  },
-  mounted() {
-    console.log("mounted entered");
-  },
-  unmounted() {
-    console.log("unmounted entered");
   },
   // methods: {
   //   ...mapActions(["onUserParameterValueChoice", "onUserParameterTypeChoice"]),

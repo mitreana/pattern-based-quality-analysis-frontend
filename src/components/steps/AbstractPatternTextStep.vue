@@ -7,40 +7,45 @@
       </div>
     </el-collapse-item>
   </el-collapse> -->
-<div class="abstract-pattern-text-step-container">
-  <p class="description-text">Click on any abstract pattern text in order to select it.</p>
-  <el-scrollbar height="400px">
-    <p class="info">Variant texts of abstract pattern : {{this.abstractPatternTexts[0].PatternName}}</p>
-    <div
-      class="card abstract-pattern-text-card"
-      v-for="abstractPatternText in abstractPatternTexts"
-      :key="abstractPatternText"
-      :style="{
-        borderColor:
-          userAbstractPatternText === abstractPatternText.PatternTextName
-            ? 'rgb(51, 204, 255)'
-            : '',
-      }"
-      @click="() => selectAbstractPatternText(abstractPatternText)"
-    >
-      <p class="card-title">
-        {{ abstractPatternText.PatternTextName }}
+  <div class="abstract-pattern-text-step-container">
+    <p class="description-text">
+      Click on any abstract pattern text in order to select it.
+    </p>
+    <el-scrollbar height="400px">
+      <p class="info">
+        Variant texts of abstract pattern :
+        {{ this.abstractPatternTexts[0].PatternName }}
       </p>
-      <div class="card-body">
-        <ReadonlySentence :fragments="abstractPatternText.Fragments" />
+      <div
+        class="card abstract-pattern-text-card"
+        v-for="abstractPatternText in abstractPatternTexts"
+        :key="abstractPatternText"
+        :style="{
+          borderColor:
+            userAbstractPatternText === abstractPatternText.PatternTextName
+              ? 'rgb(51, 204, 255)'
+              : '',
+        }"
+        @click="() => selectAbstractPatternText(abstractPatternText)"
+      >
+        <p class="card-title">
+          {{ abstractPatternText.PatternTextName }}
+        </p>
+        <div class="card-body">
+          <ReadonlySentence :fragments="abstractPatternText.Fragments" />
+        </div>
       </div>
+    </el-scrollbar>
+    <div v-if="!userAbstractPatternText && nextStepClicked">
+      <el-alert
+        class="alert"
+        title="Please select an abstract pattern text"
+        type="error"
+        show-icon
+      >
+      </el-alert>
     </div>
-  </el-scrollbar>
-  <div v-if="!userAbstractPatternText && nextStepClicked">
-    <el-alert
-      class="alert"
-      title="Please select an abstract pattern text"
-      type="error"
-      show-icon
-    >
-    </el-alert>
   </div>
-</div>
 </template>
 
 <script>
@@ -71,9 +76,6 @@ export default {
       this.selectedAbstractPatternText = abstractPatternText.PatternTextName;
       this.onUserAbstractPatternTextChoice(abstractPatternText.PatternTextName);
     },
-  },
-  updated() {
-    console.log(this.userAbstractPatternText);
   },
 };
 </script>
@@ -106,7 +108,7 @@ export default {
   text-align: left;
 }
 
-.description-text{
+.description-text {
   opacity: 0.5;
   margin-top: 1rem;
 }
@@ -115,7 +117,7 @@ export default {
   width: 80%;
   margin: auto;
 }
-.info{
+.info {
   text-align: left;
   width: 80%;
   margin: auto;

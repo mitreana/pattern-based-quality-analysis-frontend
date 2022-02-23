@@ -7,7 +7,6 @@
       <el-select
         v-model="selectedDatabase"
         placeholder="Select a Database"
-        
         :no-data-text="
           databases.length == 0
             ? 'No database. Please register a database first. '
@@ -21,7 +20,7 @@
           :title="
             `Host : ${item.Host}, Port : ${item.Port}, Name : ${item.Name}`
           "
-          :selected="item.LocalName === defaultDatabase.LocalName"
+          :selected="item?.LocalName === userDatabase[params]?.LocalName"
         >
           {{ item.LocalName }}
         </el-option>
@@ -65,15 +64,18 @@ export default {
     },
   }),
   props: ["defaultDatabase"],
-  watch:{
-    selectedDatabase: function(value) {  
-     console.log("value")
-      this.onUserDatabaseChoice(value);
-      this.setDatabaseOfPattern();
-      console.log("notification",this.selectedDatabase)
-      this.toggleEmptyErrorMessage(false);
-      
-    }
+  watch: {
+    selectedDatabase: function(value) {
+      if (
+        value &&
+        value.length > 0 &&
+        value !== this.userDatabase[this.params]?.LocalName
+      ) {
+        this.onUserDatabaseChoice(value);
+        this.setDatabaseOfPattern();
+        this.toggleEmptyErrorMessage(false);
+      }
+    },
   },
   methods: {
     ...mapActions([
@@ -84,16 +86,13 @@ export default {
       "onShowregisterDatabasecomponentOrNot",
       "onSetDatabaseOfPattern",
       "toggleEmptyErrorMessage",
-       "callDatabaseOfPattern",
+      "callDatabaseOfPattern",
     ]),
 
-    selectDaabase: function() {  
-     console.log("value")
+    selectDatabase: function() {
       this.onUserDatabaseChoice(value);
       this.setDatabaseOfPattern();
-      console.log("notification",this.selectedDatabase)
       this.toggleEmptyErrorMessage(false);
-      
     },
     openNotification(title, message, type) {
       this.$notify({
@@ -109,26 +108,28 @@ export default {
         localName: this.selectedDatabase,
         patternName: params,
       });
-      // if (this.successMessage.length > 0) {
-      //   this.openNotification("Success", this.successMessage, "success");
-      // }
-
-      // if (this.errorMessage.length > 0) {
-      //   this.openNotification("Error", this.errorMessage, "danger");
-      // }
-
       this.clearMessages();
     },
     openRegisterComponent() {
       this.onShowregisterDatabasecomponentOrNot(true);
     },
   },
-  updated() {
-    this.selectedDatabase = this.defaultDatabase.LocalName;
-  },
-  created(){
-     // this.selectedDatabase = this.defaultDatabase.LocalName;
-  },
+  created() {
+   console.log("was created")
+    console.log(this.userDatabase[this.params]);
+    if (this.userDatabase[this.params]) {
+      this.selectedDatabase = this.userDatabase[this.params]?.LocalName;
+    } else {
+      this.selectedDatabase = "";
+    }
+  },updated(){
+    console.log("was updated")
+    if (this.userDatabase[this.params]) {
+      this.selectedDatabase = this.userDatabase[this.params]?.LocalName;
+    } else {
+      this.selectedDatabase = "";
+    }
+  }
 };
 </script>
 

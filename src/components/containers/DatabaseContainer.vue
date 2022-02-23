@@ -10,22 +10,6 @@
     <!-- <DatabasesTable v-if="registerDatabaseComponent === false"></DatabasesTable> -->
     <DatabasesTable v-if="databases && databases.length > 0"></DatabasesTable>
   </div>
-
-  <!-- <div class="card">
-  <el-form :model="form" ref="form" label-position="left">
-    <el-button type="primary" plain>Run Test</el-button>
-    <div class="container my-4">
-      <el-form-item class="d-flex flex-column text-justify">
-        <div class="card" >
-          <div class="card-body">
-              <plaintext >RESULT</plaintext>
-          </div>
-        </div>
-      </el-form-item>
-    </div>
-  </el-form>
-  </div> -->
-
   <!-- <div v-if="finalizedPatternsOfDatabase && finalizedPatternsOfDatabase.length > 0"><FinalizedPatternsTable></FinalizedPatternsTable></div> -->
 </template>
 
@@ -40,7 +24,7 @@ export default {
       showFinalizedPatterns: false,
     };
   },
-  name: "TestDatabaseForm",
+  name: "DatabaseContainer",
   components: { DatabasesTable, RegisterDatabaseForm, FinalizedPatternsTable },
   computed: mapState({
     concretePatternTextObject: (state) => {

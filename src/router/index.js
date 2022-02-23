@@ -2,9 +2,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import CreateNewPattern from "../views/CreateNewPattern.vue";
 import ConcretePatterns from "../views/ConcretePatterns.vue";
 import EditConcretePatternText from "../views/EditConcretePatternText.vue";
-import RunTest from "../views/RunTest.vue"
+import ApplyPattern from "../views/ApplyPattern.vue";
 import RegisterDatabaseForm from "../components/forms/RegisterDatabaseForm.vue"
-import TestResultContainer from "../components/containers/TestResultContainer.vue";
+import ResultContainer from "../components/containers/ResultContainer.vue";
 
 const routes = [
   {
@@ -28,8 +28,8 @@ const routes = [
   },
   {
     path: "/databases",
-    name: "RunTest",
-    component: RunTest,
+    name: "ApplyPattern",
+    component: ApplyPattern,
   },
   {
     path: "/databases/registerDatabase",
@@ -38,8 +38,8 @@ const routes = [
   },
   {
     path: "/results",
-    name: "TestResultContainer",
-    component: TestResultContainer,
+    name: "ResultContainer",
+    component: ResultContainer,
   },
 ];
 

@@ -23,7 +23,6 @@ const finalizedPatternsActions = {
     const finalizedPatternsOfDatabasePayload = await FinalizedPatternsService.getFinalizedPatternsOfDatabase(
       localName
     );
-    console.log(finalizedPatternsOfDatabasePayload.data);
     if (finalizedPatternsOfDatabasePayload.success) {
       context.commit("registerErrorMessage", "");
       context.commit(
@@ -58,7 +57,7 @@ const finalizedPatternsActions = {
       context.commit("registerApplyPatternsErrorMessage", err.message);
     }
   },
-  onResetApplyPatternsResponse:(context) => {
+  onResetApplyPatternsResponse: (context) => {
     context.commit("resetApplyPatternsResponse");
   },
 };

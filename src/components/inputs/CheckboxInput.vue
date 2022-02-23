@@ -22,11 +22,6 @@ export default {
       this.change(value === "");
     },
   },
-
-  mounted() {
-    console.log("This is the checkbox value", this.checkboxValue);
-    console.log(this.value);
-  },
 };
 </script>
 

@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "./axios";
 
 class AbstractPatternService {
   baseUrl;
@@ -9,7 +9,7 @@ class AbstractPatternService {
 
   async getAbstractPatterns() {
     try {
-      const payload = await axios.get(this.baseUrl);
+      const payload = await api.get(this.baseUrl);
 
       return {
         success: true,
@@ -25,7 +25,7 @@ class AbstractPatternService {
 
   async getAbstractPatternTexts(abstractPattern) {
     try {
-      const payload = await axios.get(
+      const payload = await api.get(
         this.baseUrl + `/text-list/${abstractPattern}`
       );
 
@@ -42,9 +42,8 @@ class AbstractPatternService {
   }
 
   async postConcretePattern(body) {
-
     try {
-      const payload = await axios.post(
+      const payload = await api.post(
         this.baseUrl +
           `/instantiation/` +
           `${body.abstractPattern}` +

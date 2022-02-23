@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "./axios";
 
 class FinalizedPatternsService {
   constructor(baseUrl) {
@@ -7,7 +7,7 @@ class FinalizedPatternsService {
 
   async getFinalizedPatterns() {
     try {
-      const payload = await axios.get(this.baseUrl);
+      const payload = await api.get(this.baseUrl);
       return {
         success: true,
         data: payload.data,
@@ -24,7 +24,7 @@ class FinalizedPatternsService {
   // /application?pattern-names=card_concrete_finalized
   async postApplyPatterns(patternNames) {
     try {
-      const payload = await axios.post(
+      const payload = await api.post(
         this.baseUrl +
           "/application?pattern-names=" +
           patternNames.join("&pattern-names="),
@@ -46,7 +46,7 @@ class FinalizedPatternsService {
   //http://localhost:8080/qualitypatternmodel/finalized-patterns/database/neww
   async getFinalizedPatternsOfDatabase(localName) {
     try {
-      const payload = await axios.get(this.baseUrl + "/database/" + localName);
+      const payload = await api.get(this.baseUrl + "/database/" + localName);
       return {
         success: true,
         data: payload.data,

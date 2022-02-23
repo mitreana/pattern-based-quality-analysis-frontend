@@ -117,7 +117,6 @@ export default {
       }
     },
     back() {
-      console.log("Active on the back is", this.active);
       if (this.active > 0) {
         this.active -= 1;
       }
@@ -210,6 +209,7 @@ export default {
 .control-button-group .next-button {
   width: 50%;
   justify-self: end;
+   
 }
 
 .control-button-group .back-button {

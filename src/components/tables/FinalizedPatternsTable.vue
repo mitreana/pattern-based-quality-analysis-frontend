@@ -9,7 +9,7 @@
       Select Finalized Patterns in order to test the selected Database
     </p>
     <el-table
-    v-loading="loading"
+      v-loading="loading"
       v-if="
         finalizedPatternsOfDatabase && finalizedPatternsOfDatabase.length > 0
       "
@@ -18,7 +18,6 @@
       :data="finalizedPatternsOfDatabase"
       @selection-change="handleSelectionChange"
       height="20rem"
-      
     >
       <el-table-column type="selection" />
       <el-table-column label="Name" width="200%">
@@ -41,18 +40,19 @@
     v-if="finalizedPatternsOfDatabase && finalizedPatternsOfDatabase.length > 0"
     class="testButton"
   >
-    <el-button @click="applyPatterns">Apply Patterns to Database</el-button>
+    <el-button @click="applyPatterns" :loading="loading">{{
+      loading ? "Applying Patterns to Database" : "Apply Patterns to Database"
+    }}</el-button>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
-import { ref } from 'vue'
+import { ref } from "vue";
 export default {
- 
   data() {
     return {
-      loading : ref(false),
+      loading: false,
       multipleSelection: [],
     };
   },
@@ -88,8 +88,10 @@ export default {
       this.multipleSelection = val;
     },
     async applyPatterns() {
+      this.loading = true;
       await this.onApplyPatterns(this.multipleSelection);
       if (this.applyPatternsResponse && this.applyPatternsResponse.length > 0) {
+        this.loading = false;
         this.$router.push(`/results`);
       }
     },

@@ -147,9 +147,7 @@ export default {
       this.callDatabases;
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert("submit!");
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -162,27 +160,21 @@ export default {
     },
     enterUser: function(value) {
       this.user = value;
-      console.log(" ist" + this.user);
     },
     enterPassword: function(value) {
       this.password = value;
-      console.log("Password ist  " + this.password);
     },
     enterLocalname: function(value) {
       this.localname = value;
-      console.log("localname ist  " + this.localname);
     },
     enterHost: function(value) {
       this.host = value;
-      console.log("Host ist  " + this.host);
     },
     enterPort: function(value) {
       this.port = String(value);
-      console.log("port ist  " + typeof this.port);
     },
     enterName: function(value) {
       this.name = value;
-      console.log("name ist  " + this.name);
     },
     openNotification(title, message, type) {
       this.$notify({

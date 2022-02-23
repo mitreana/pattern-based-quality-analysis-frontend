@@ -6,10 +6,8 @@
       align="center"
       width="100%"
       size="medium"
-      :row-class-name="column-name"
-      row-style="word-break: normal"
     >
-      <el-table-column  style="background: red" width="210%" label="Name" prop="Name" class="columnName">
+      <el-table-column width="210%" label="Name" prop="Name" class="columnName">
       </el-table-column>
       <el-table-column
         width="150%"
@@ -20,7 +18,7 @@
         width="550%"
         label="Description"
         prop="Description"
-        class="columnName"
+        class="columnName1"
       ></el-table-column>
       <el-table-column width="180%" align="right">
         <template #header>
@@ -84,6 +82,7 @@ import { mapState, mapActions } from "vuex";
 export default {
   data: () => {
     return {
+      loading: false,
       userConcretePatternChoice: "",
       search: "",
       currentPage: 1,
@@ -93,7 +92,6 @@ export default {
   computed: mapState({
     concretePatterns: (state) => {
       let tableData = state.concretePatterns;
-      console.log(tableData);
       return state.concretePatterns;
     },
     userConcretePatternName: (state) => {

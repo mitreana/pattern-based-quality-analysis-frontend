@@ -110,14 +110,10 @@ export default {
   methods: {
     ...mapActions(["selectActiveParameter"]),
     selectParameter(fragment) {
-      console.log(this.concretePatternParameterPosting);
       if (!this.concretePatternParameterPosting) {
         this.selectActiveParameter(fragment);
       }
     },
-  },
-  created() {
-    console.log(this.fragments);
   },
 };
 </script>

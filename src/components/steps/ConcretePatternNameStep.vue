@@ -26,9 +26,9 @@
     <p class="concrete-pattern-name-title">Concrete Pattern Name :</p>
     <el-form-item
       :error="
-        userConcretePatternName.length === 0 &&
-          createButtonClicked &&
-          'Please enter a concrete pattern name'
+        userConcretePatternName.length === 0 && createButtonClicked
+          ? 'Please enter a concrete pattern name'
+          : ''
       "
     >
       <el-input
