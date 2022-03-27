@@ -258,6 +258,7 @@ export default {
       if (concretiseParameterPayload) {
         this.concretizeParameter(this.activeParameter.Name);
       }
+      
     },
     openNotification(title, message, type) {
       this.$notify({
@@ -268,70 +269,7 @@ export default {
       });
     },
   },
-  // methods: {
-  //   ...mapActions(["onUserParameterValueChoice", "onUserParameterTypeChoice"]),
-  //   openNotification(title, message, type) {
-  //     this.$notify({
-  //       title,
-  //       message,
-  //       type,
-  //       position: "bottom-right",
-  //     });
-  //   },
-  //   onValueChange: function(value, url) {
-  //     this.activeParameter.Value = String(value);
-  //     this.onUserParameterValueChoice({ value: String(value), url });
-  //   },
-  //   onBooleanChange: function(value, url) {
-  //     this.activeParameter.Value = Boolean(value);
-  //     this.onUserParameterValueChoice({ value: Boolean(value), url });
-  //   },
-  //   onTypeChange: function(type) {
-  //     this.activeParameter.Type = type;
-  //   },
-  //   onConcretiseParameter: async function() {
-  //     const concretiseParameterPayload = await ConcretePatternService.postConcretiseParameter(
-  //       this.fragment.URL,
-  //       this.activeParameter.Value ? this.activeParameter.Value : this.fragment.Value,
-  //       this.activeParameter.Type ? this.activeParameter.Type : this.fragment.Type
-  //     );
-
-  //     if (concretiseParameterPayload) {
-  //       this.concretised = true;
-  //     }
-
-  //     if (this.concretised) {
-  //       this.openNotification(
-  //         "Success message",
-  //         "New Paremeter value was successfully added!",
-  //         "success"
-  //       );
-  //     }
-  //   },
-  // },
-  // mounted() {
-  //   this.added = false;
-  // },
-  // unmounted() {
-  //   const defaultValue =
-  //     this.concretePatternParameters[this.fragment.URL] &&
-  //     this.concretePatternParameters[this.fragment.URL].defaultValue &&
-  //     this.concretePatternParameters[this.fragment.URL].defaultValue;
-
-  //   const URL = this.fragment && this.fragment.URL && this.fragment.URL;
-
-  //   const defaultType =
-  //     this.concretePatternParameters[this.fragment.URL] &&
-  //     this.concretePatternParameters[this.fragment.URL].defaultType &&
-  //     this.concretePatternParameters[this.fragment.URL].defaultType;
-
-  //   if (!this.added) {
-  //     this.onValueChange(defaultValue, URL);
-  //     this.onTypeChange(defaultType, URL);
-  //   }
-  // },
-  // created() {
-  //   console.log("This is the fragment", this.fragment);
-  // },
+ 
+ 
 };
 </script>

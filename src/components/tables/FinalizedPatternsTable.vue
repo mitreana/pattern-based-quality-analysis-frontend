@@ -40,7 +40,7 @@
     v-if="finalizedPatternsOfDatabase && finalizedPatternsOfDatabase.length > 0"
     class="testButton"
   >
-    <el-button @click="applyPatterns" :loading="loading">{{
+    <el-button @click="applyPatterns" v-if="multipleSelection.length > 0" :loading="loading">{{
       loading ? "Applying Patterns to Database" : "Apply Patterns to Database"
     }}</el-button>
   </div>
@@ -48,12 +48,13 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import { ref } from "vue";
+
 export default {
   data() {
     return {
       loading: false,
       multipleSelection: [],
+      disabled : true
     };
   },
   computed: mapState({

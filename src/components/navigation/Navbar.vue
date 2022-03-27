@@ -18,14 +18,12 @@
       >Concrete Patterns</el-menu-item
     >
     <el-menu-item index="/databases" @click="navigateTo('/databases')"
-      >Databases</el-menu-item
+      > Databases</el-menu-item
     >
   </el-menu>
 </template>
 <script>
-//#33CCFF active
-//#fff
-//#545c64
+
 export default {
   data() {
     return {

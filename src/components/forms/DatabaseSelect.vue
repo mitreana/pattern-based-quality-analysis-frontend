@@ -115,15 +115,12 @@ export default {
     },
   },
   created() {
-   console.log("was created")
-    console.log(this.userDatabase[this.params]);
     if (this.userDatabase[this.params]) {
       this.selectedDatabase = this.userDatabase[this.params]?.LocalName;
     } else {
       this.selectedDatabase = "";
     }
   },updated(){
-    console.log("was updated")
     if (this.userDatabase[this.params]) {
       this.selectedDatabase = this.userDatabase[this.params]?.LocalName;
     } else {

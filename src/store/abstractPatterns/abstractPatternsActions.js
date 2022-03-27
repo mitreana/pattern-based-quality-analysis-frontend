@@ -23,22 +23,12 @@ const abstractPatternsActions = {
   callAbstractPatterns: async (context) => {
     const abstractPatternPayload = await AbstractPatternService.getAbstractPatterns();
     if (abstractPatternPayload.success) {
-      // abstractPatternPayload.data = abstractPatternPayload.data.replaceAll(
-      //   "\n",
-      //   ""
-      // )
-
-      // const parsedAbstractPatternPayload = JSON.parse(
-      //   abstractPatternPayload.data
-      // );
-      // console.log(parsedAbstractPatternPayload)
-
       context.commit("registerErrorMessage", "");
       context.commit("registerAbstractPatterns", abstractPatternPayload.data);
     } else {
       context.commit(
         "registerErrorMessage",
-        abstractPatternPayload.data.message
+         abstractPatternPayload.data.message
       );
     }
   },

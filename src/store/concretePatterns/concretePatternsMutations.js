@@ -20,7 +20,7 @@ const concretePatternsMutations = {
   registerConcretePatterns: (state, concretePatterns) => {
     state.concretePatterns = [...concretePatterns];
   },
-  registerConcretePatternText: (state, concretePatternText) => {
+  registerConcretePatternText: (state, concretePatternText) => { 
     if (concretePatternText.Fragments) {
       concretePatternText.Fragments = concretePatternText.Fragments.map(
         (fragment) => {

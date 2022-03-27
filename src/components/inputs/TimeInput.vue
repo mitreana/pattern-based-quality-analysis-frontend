@@ -25,7 +25,7 @@ export default {
           minutes = 0;
           seconds = 0;
         }
-        // 1 January 1970
+        
         const baseDate = new Date(1970, 0, 0);
         baseDate.setTime(
           baseDate.getTime() +

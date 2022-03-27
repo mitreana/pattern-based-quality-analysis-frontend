@@ -53,36 +53,6 @@
               :sentenceDetails="concretePatternTextObject"
           /></el-form-item>
 
-          <!-- <div id="name">
-          <el-collapse class="concrete-pattern-info">
-            <el-collapse-item title="Pattern Details">
-              <div>
-                <p>Name : {{ concretePatternTextObject.PatternName }}</p>
-                <p>
-                  Text Name :
-                  {{ concretePatternTextObject.PatternTextName }}
-                </p>
-              </div>
-            </el-collapse-item>
-          </el-collapse>
-          <el-form-item
-            label="Pattern Description"
-            class="d-flex flex-column text-justify"
-            v-if="
-              concretePatternTextObject.PatternName &&
-                concretePatternTextObject.PatternName.length > 0
-            "
-          >
-            <el-input
-              type="textarea"
-              class="w-100"
-              v-model="concretePatternTextObject.PatternDescription"
-              @input="updateDescription"
-            
-            >
-            </el-input>
-          </el-form-item>
-        </div> -->
         </el-form>
       </div>
     </div>

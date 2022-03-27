@@ -143,15 +143,7 @@ export default {
       "clearMessages",
       "onShowregisterDatabasecomponentOrNot",
     ]),
-    submitForm(formName) {
-      this.callDatabases;
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-        } else {
-          return false;
-        }
-      });
-    },
+
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },

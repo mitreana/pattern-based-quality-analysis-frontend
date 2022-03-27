@@ -60,7 +60,8 @@ export default {
   data: () => {
     return {
       loading: false,
-    };
+      allInputsEntered : null
+    }
   },
   computed: {
     ...mapState({
@@ -94,13 +95,26 @@ export default {
       "onCallConcretePatternParameterExplanations",
       "onSetPatternDescription",
     ]),
-    async finalize() {
+
+    inputsEntered(){ 
+     const element = this.fragments.find(
+       fragment => typeof(fragment) === "object" && 
+       !fragment.Value)
+     if (element){
+       this.allInputsEntered = false
+     }
+     if (!element){
+       this.allInputsEntered = true
+     }
+    },
+      async finalize() {
+      this.inputsEntered()
       this.loading = true;
       if (this.userDatabase[this.sentenceDetails.PatternName]) {
         this.toggleEmptyErrorMessage(false);
         const params = this.$route.params;
         await this.onValidatePatternAgainstSchema(params.concretePatternName);
-        if (this.successMessage.length > 0) {
+        if (this.successMessage.length > 0 && this.allInputsEntered) {
           await this.onFinalization(params.concretePatternName);
           if (this.successMessage.length > 0) {
             this.openNotification(
@@ -116,7 +130,7 @@ export default {
             );
           }
         }
-        if (this.errorMessage.length > 0) {
+        if (this.errorMessage.length > 0 ) {
           if (this.errorMessage.includes("500")) {
             this.openNotification(
               "Error Message",
@@ -131,6 +145,13 @@ export default {
             );
           }
         }
+         if (!this.allInputsEntered ) {
+            this.openNotification(
+              "Error Message",
+              `Please enter reasonable values for each input!`,
+              "error"
+            );
+          }
       } else {
         this.toggleEmptyErrorMessage(true);
       }
@@ -151,7 +172,7 @@ export default {
       this.selectedDescription = this.sentenceDetails.PatternDescription;
       this.timeoutFn = setTimeout(async () => {
         await this.setPatternDescription();
-      }, 1000);
+      }, 1500);
     },
     async setPatternDescription() {
       const params = this.$route.params;
@@ -161,7 +182,11 @@ export default {
       });
     },
   },
+  updated(){
+    this.inputsEntered()
+  },
   created() {
+    this.inputsEntered()
     if (!this.parameterExplanations) {
       this.onCallConcretePatternParameterExplanations();
     }

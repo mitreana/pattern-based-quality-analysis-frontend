@@ -1,21 +1,4 @@
 <template>
-  <!-- <el-collapse class="abstract-pattern-info">
-    <el-collapse-item title="Abstract Pattern">
-      <div>
-        <p>{{ this.userAbstractPatternName}}</p>
-        <p>{{ this.userAbstractPatternName }}</p>
-      </div>
-    </el-collapse-item>
-  </el-collapse>
-  
-    <el-collapse class="abstract-pattern-text-info">
-    <el-collapse-item title="Abstract Pattern Text">
-      <div>
-        <p>{{ this.userAbstractPatternText }}</p>
-        <p>{{ this.userAbstractPattern}}</p>
-      </div>
-    </el-collapse-item>
-  </el-collapse> -->
   <p class="description-input">Enter an appropriate concrete pattern name.</p>
   <div class="info">
     <p>Abstract pattern : {{ this.userAbstractPattern }}</p>

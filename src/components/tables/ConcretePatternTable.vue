@@ -7,7 +7,7 @@
       width="100%"
       size="medium"
     >
-      <el-table-column width="210%" label="Name" prop="Name" class="columnName">
+      <el-table-column width="230%" label="Name" prop="Name" class="columnName">
       </el-table-column>
       <el-table-column
         width="150%"
@@ -91,7 +91,6 @@ export default {
   },
   computed: mapState({
     concretePatterns: (state) => {
-      let tableData = state.concretePatterns;
       return state.concretePatterns;
     },
     userConcretePatternName: (state) => {
@@ -193,5 +192,10 @@ export default {
 
 .column-name {
   background: "red";
+}
+
+.el-pagination{
+  display: flex;
+  justify-content: center;
 }
 </style>

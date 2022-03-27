@@ -56,9 +56,7 @@
 </template>
 
 <script>
-//Click on any abstract pattern in order to select it and view his texts
-//Click on any abstract pattern text in order to select it
-//Enter an appropriate concrete pattern name
+
 import AbstractPatternStep from "./AbstractPatternStep.vue";
 import AbstractPatternTextStep from "./AbstractPatternTextStep.vue";
 import ConcretePatternNameStep from "./ConcretePatternNameStep.vue";
@@ -162,8 +160,8 @@ export default {
         await this.onSubmit();
         if (this.successMessage.length > 0) {
           this.openNotification(
-            "Redirecting to newly created Pattern ...",
-            this.successMessage,
+            "Redirecting to newly created Pattern..." ,
+            "< " + this.userConcretePatternName + " >" ,
             "success"
           );
           this.callConcretePatterns;

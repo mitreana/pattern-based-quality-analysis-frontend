@@ -31,7 +31,7 @@ const concretePatternsActions = {
       } else {
         context.commit(
           "registerErrorMessage",
-          concretePatternPayload.data.message
+           concretePatternPayload.data.message
         );
       }
     }
@@ -39,13 +39,6 @@ const concretePatternsActions = {
   callConcretePatterns: async (context) => {
     const concretePatternPayload = await ConcretePatternService.getConcretePatterns();
     if (concretePatternPayload.success) {
-      // concretePatternPayload.data = concretePatternPayload.data.replaceAll(
-      //   ", }",
-      //   "}"
-      // );
-      // const parsedconcretePatternPayload = JSON.parse(
-      //   concretePatternPayload.data
-      // );
       context.commit("registerErrorMessage", "");
       context.commit("registerConcretePatterns", concretePatternPayload.data);
     } else {
@@ -70,7 +63,6 @@ const concretePatternsActions = {
         concretePatternPayload.data
       );
 
-      //   context.commit("initializeParameters", concretePatternPayloadToJson.data);
     } else {
       context.commit(
         "registerErrorMessage",

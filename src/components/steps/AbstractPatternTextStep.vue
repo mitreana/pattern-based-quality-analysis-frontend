@@ -1,12 +1,4 @@
 <template>
-  <!-- <el-collapse class="abstract-pattern-info">
-    <el-collapse-item title="Abstract Pattern">
-      <div>
-        <p>{{ this.abstractPatternTexts[0].PatternName }}</p>
-        <p>{{ this.abstractPatternTexts[0].PatternDescription }}</p>
-      </div>
-    </el-collapse-item>
-  </el-collapse> -->
   <div class="abstract-pattern-text-step-container">
     <p class="description-text">
       Click on any abstract pattern text in order to select it.

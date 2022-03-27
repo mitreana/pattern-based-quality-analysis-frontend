@@ -1,4 +1,5 @@
 import api from "./axios";
+import axios from "axios"
 
 class AbstractPatternService {
   baseUrl;
@@ -9,7 +10,7 @@ class AbstractPatternService {
 
   async getAbstractPatterns() {
     try {
-      const payload = await api.get(this.baseUrl);
+      const payload = await axios.get(this.baseUrl);
 
       return {
         success: true,

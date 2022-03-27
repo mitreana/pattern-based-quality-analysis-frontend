@@ -73,7 +73,6 @@ export default {
       this.onResetApplyPatternsResponse();
     },
     copy(results) {
-      //var text = document.getElementById("item").innerText;
       navigator.clipboard
         .writeText(results)
         .then(() => {

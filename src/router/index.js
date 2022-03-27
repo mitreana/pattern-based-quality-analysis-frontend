@@ -10,6 +10,7 @@ const routes = [
   {
     path: "/",
     redirect: "/createNewPattern",
+    component: CreateNewPattern,
   },
   {
     path: "/createNewPattern",
