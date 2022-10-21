@@ -1,7 +1,7 @@
 const messageActions = {
-  clearMessages: (context) => {
-    context.commit("resetMessages");
-  },
+    clearMessages: (context) => {
+        context.commit("resetMessages");
+    },
 };
 
 export default messageActions;

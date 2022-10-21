@@ -6,12 +6,12 @@ import finalizedPatternsMutations from "./finalizedPatterns/finalizedPatternsMut
 import messageMutations from "./message/messageMutations";
 
 const mutations = {
-  ...abstractPatternsMutations,
-  ...concretePatternsMutations,
-  ...concretePatternSentenceMutations,
-  ...messageMutations,
-  ...databaseMutations,
-  ...finalizedPatternsMutations,
+    ...abstractPatternsMutations,
+    ...concretePatternsMutations,
+    ...concretePatternSentenceMutations,
+    ...messageMutations,
+    ...databaseMutations,
+    ...finalizedPatternsMutations,
 };
 
 export default mutations;

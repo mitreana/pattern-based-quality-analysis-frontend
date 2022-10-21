@@ -9,20 +9,20 @@ import databaseInitialState from "./databases/databaseState"
 import finalizedPatternsInitialData from "./finalizedPatterns/finalizedPatternsState";
 
 const initialData = {
-  ...abstractPatternInitialState,
-  ...concretePatternInitialState,
-  ...concretePatternSentenceInitialState,
-  ...messageInitialState,
-  ...databaseInitialState,
-  ...finalizedPatternsInitialData
+    ...abstractPatternInitialState,
+    ...concretePatternInitialState,
+    ...concretePatternSentenceInitialState,
+    ...messageInitialState,
+    ...databaseInitialState,
+    ...finalizedPatternsInitialData
 };
 
 const store = createStore({
-  state() {
-    return initialData;
-  },
-  actions: actions,
-  mutations: mutations,
+    state() {
+        return initialData;
+    },
+    actions: actions,
+    mutations: mutations,
 });
 
 export default store;

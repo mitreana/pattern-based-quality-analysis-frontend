@@ -1,6 +1,6 @@
 const messageInitialState = {
-  errorMessage: "",
-  successMessage: "",
+    errorMessage: "",
+    successMessage: "",
 };
 
 export default messageInitialState;

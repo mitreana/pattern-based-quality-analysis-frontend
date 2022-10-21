@@ -6,12 +6,12 @@ import messageActions from "./message/messageActions";
 import finalizedPatternsActions from "./finalizedPatterns/finalizedPatternsActions"
 
 const actions = {
-  ...abstractPatternsActions,
-  ...concretePatternsActions,
-  ...concretePatternSentenceActions,
-  ...messageActions,
-  ...databaseActions,
-  ...finalizedPatternsActions,
+    ...abstractPatternsActions,
+    ...concretePatternsActions,
+    ...concretePatternSentenceActions,
+    ...messageActions,
+    ...databaseActions,
+    ...finalizedPatternsActions,
 };
 
 export default actions;
