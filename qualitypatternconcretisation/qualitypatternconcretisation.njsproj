@@ -1,0 +1,172 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <Name>qualitypatternconcretisation</Name>
+    <RootNamespace>qualitypatternconcretisation</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>63bb31a2-78ef-415a-aaf9-ef1f1a9dd87b</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>node_modules\@vue\cli-service\bin\vue-cli-service.js</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <NodejsPort>1337</NodejsPort>
+    <StartWebBrowser>true</StartWebBrowser>
+    <ScriptArguments>serve</ScriptArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+      npm run build
+    </PostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="public\" />
+    <Folder Include="src\" />
+    <Folder Include="src\assets\" />
+    <Folder Include="src\components\" />
+    <Folder Include="src\components\containers\" />
+    <Folder Include="src\components\forms\" />
+    <Folder Include="src\components\inputs\" />
+    <Folder Include="src\components\navigation\" />
+    <Folder Include="src\components\sentence\" />
+    <Folder Include="src\components\steps\" />
+    <Folder Include="src\components\tables\" />
+    <Folder Include="src\router\" />
+    <Folder Include="src\services\" />
+    <Folder Include="src\store\" />
+    <Folder Include="src\store\abstractPatterns\" />
+    <Folder Include="src\store\concretePatternSentence\" />
+    <Folder Include="src\store\concretePatterns\" />
+    <Folder Include="src\store\databases\" />
+    <Folder Include="src\store\finalizedPatterns\" />
+    <Folder Include="src\store\message\" />
+    <Folder Include="src\views\" />
+    <Folder Include="src\views\listviews\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".env" />
+    <Content Include="babel.config.js" />
+    <Content Include="package.json" />
+    <Content Include="public\favicon.ico" />
+    <Content Include="public\index.html" />
+    <Content Include="README.md" />
+    <Content Include="src\App.vue" />
+    <Content Include="src\assets\logo.png" />
+    <Content Include="src\components\containers\ConcretePatternSentenceContainer.vue" />
+    <Content Include="src\components\containers\DatabaseContainer.vue" />
+    <Content Include="src\components\containers\ResultContainer.vue" />
+    <Content Include="src\components\forms\AbstractPatternsForm.vue" />
+    <Content Include="src\components\forms\DatabaseSelect.vue" />
+    <Content Include="src\components\forms\RegisterDatabaseForm.vue" />
+    <Content Include="src\components\inputs\CheckboxInput.vue" />
+    <Content Include="src\components\inputs\DateInput.vue" />
+    <Content Include="src\components\inputs\DateTimeInput.vue" />
+    <Content Include="src\components\inputs\NumberInput.vue" />
+    <Content Include="src\components\inputs\SelectInput.vue" />
+    <Content Include="src\components\inputs\TextInput.vue" />
+    <Content Include="src\components\inputs\TimeInput.vue" />
+    <Content Include="src\components\navigation\NavigationButton.vue" />
+    <Content Include="src\components\navigation\Navbar.vue" />
+    <Content Include="src\components\sentence\ReadonlySentence.vue" />
+    <Content Include="src\components\sentence\SentenceParameter.vue" />
+    <Content Include="src\components\sentence\SentenceText.vue" />
+    <Content Include="src\components\steps\AbstractPatternStep.vue" />
+    <Content Include="src\components\steps\AbstractPatternSteps.vue" />
+    <Content Include="src\components\steps\AbstractPatternTextStep.vue" />
+    <Content Include="src\components\steps\ConcretePatternNameStep.vue" />
+    <Content Include="src\components\tables\AbstractPatternTable.vue" />
+    <Content Include="src\components\tables\PatternTable.vue" />
+    <Content Include="src\components\tables\ConcretePatternTable.vue" />
+    <Content Include="src\components\tables\DatabasesTable.vue" />
+    <Content Include="src\components\tables\FinalizedPatternTable.vue" />
+    <Content Include="src\main.js" />
+    <Content Include="src\router\index.js" />
+    <Content Include="src\services\AbstractPatternService.js" />
+    <Content Include="src\services\axios.js" />
+    <Content Include="src\services\ConcretePatternService.js" />
+    <Content Include="src\services\DatabaseService.js" />
+    <Content Include="src\services\FinalizedPatternsService.js" />
+    <Content Include="src\store\abstractPatterns\abstractPatternsActions.js" />
+    <Content Include="src\store\abstractPatterns\abstractPatternsMutations.js" />
+    <Content Include="src\store\abstractPatterns\abstractPatternsState.js" />
+    <Content Include="src\store\actions.js" />
+    <Content Include="src\store\concretePatternSentence\concretePatternSentenceActions.js" />
+    <Content Include="src\store\concretePatternSentence\concretePatternSentenceMutations.js" />
+    <Content Include="src\store\concretePatternSentence\concretePatternSentenceState.js" />
+    <Content Include="src\store\concretePatterns\concretePatternsActions.js" />
+    <Content Include="src\store\concretePatterns\concretePatternsMutations.js" />
+    <Content Include="src\store\concretePatterns\concretePatternsState.js" />
+    <Content Include="src\store\databases\databaseActions.js" />
+    <Content Include="src\store\databases\databaseMutations.js" />
+    <Content Include="src\store\databases\databaseState.js" />
+    <Content Include="src\store\finalizedPatterns\finalizedPatternsActions.js" />
+    <Content Include="src\store\finalizedPatterns\finalizedPatternsMutations.js" />
+    <Content Include="src\store\finalizedPatterns\finalizedPatternsState.js" />
+    <Content Include="src\store\message\messageActions.js" />
+    <Content Include="src\store\message\messageMutations.js" />
+    <Content Include="src\store\message\messageState.js" />
+    <Content Include="src\store\mutations.js" />
+    <Content Include="src\store\store.js" />
+    <Content Include="src\views\ApplyPattern.vue" />
+    <Content Include="src\views\listviews\AbstractPatterns.vue" />
+    <Content Include="src\views\listviews\FinalizedPatterns.vue" />
+    <Content Include="src\views\listviews\ConcretePatterns.vue" />
+    <Content Include="src\views\Databases.vue" />
+    <Content Include="src\views\Menu.vue" />
+    <Content Include="src\views\CreateNewPattern.vue" />
+    <Content Include="src\views\EditConcretePatternText.vue" />
+  </ItemGroup>
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:48022/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost:1337</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
