@@ -1,0 +1,3 @@
+F:\Arbeit\SourceTree\frontend-pattern-based-quality-analysis\qualitypatternconcretisation\obj\Debug\qualitypatternconcretisation.njsproj.AssemblyReference.cache
+F:\Arbeit\SourceTree\frontend-pattern-based-quality-analysis\qualitypatternconcretisation\obj\Debug\qualitypatternconcretisation.njsproj.CoreCompileInputs.cache
+F:\Arbeit\SourceTree\frontend-pattern-based-quality-analysis\qualitypatternconcretisation\bin\Microsoft.NodejsTools.WebRole.dll
